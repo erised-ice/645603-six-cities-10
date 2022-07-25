@@ -1,6 +1,34 @@
 import React, {ChangeEvent, useState} from 'react';
 import RatingItem from '../rating-item/rating-item';
 
+const RatingData = [
+  {
+    value: 5,
+    id: '5-stars',
+    title: 'perfect',
+  },
+  {
+    value: 4,
+    id: '4-stars',
+    title: 'good',
+  },
+  {
+    value: 3,
+    id: '3-stars',
+    title: 'not bad',
+  },
+  {
+    value: 2,
+    id: '2-stars',
+    title: 'badly',
+  },
+  {
+    value: 1,
+    id: '1-stars',
+    title: 'terribly',
+  }
+];
+
 function ReviewForm() {
   const [userReview, setUserReview] = useState('');
   const [userRating, setUserRating] = useState(0);
@@ -14,36 +42,15 @@ function ReviewForm() {
       {/*TODO: add onSubmit*/}
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
-        <RatingItem
-          value={5}
-          id="5-stars"
-          title="perfect"
-          onChange={({target}: ChangeEvent<HTMLInputElement>) => setUserRating(5)}
-        />
-        <RatingItem
-          value={4}
-          id="4-stars"
-          title="good"
-          onChange={({target}: ChangeEvent<HTMLInputElement>) => setUserRating(4)}
-        />
-        <RatingItem
-          value={3}
-          id="3-stars"
-          title="not bad"
-          onChange={({target}: ChangeEvent<HTMLInputElement>) => setUserRating(3)}
-        />
-        <RatingItem
-          value={2}
-          id="2-stars"
-          title="badly"
-          onChange={({target}: ChangeEvent<HTMLInputElement>) => setUserRating(2)}
-        />
-        <RatingItem
-          value={1}
-          id="1-stars"
-          title="terribly"
-          onChange={({target}: ChangeEvent<HTMLInputElement>) => setUserRating(1)}
-        />
+        {RatingData.map(({value, id, title}) => (
+          <RatingItem
+            value={value}
+            id={id}
+            title={title}
+            onChange={() => setUserRating(value)}
+            key={id}
+          />
+        ))}
       </div>
       <textarea
         className="reviews__textarea form__textarea"
