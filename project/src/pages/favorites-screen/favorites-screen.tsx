@@ -1,8 +1,13 @@
 import React from 'react';
 import Header from '../../components/header/header';
 import PlaceCard from '../../components/place-card/place-card';
+import {Offers} from '../../types/offer';
 
-function FavoritesScreen(): JSX.Element {
+type FavoritesScreenProps = {
+  offers: Offers;
+}
+
+function FavoritesScreen({offers}: FavoritesScreenProps): JSX.Element {
   return (
     <div className="page">
       <Header />
@@ -21,7 +26,8 @@ function FavoritesScreen(): JSX.Element {
                   </div>
                 </div>
                 <div className="favorites__places">
-                  {[120, 30].map((item) => <PlaceCard classNamePrefix='favorites' key={item}/>)}
+                  {/*TODO: add if*/}
+                  {offers.map((item) => <PlaceCard classNamePrefix='favorites' offer={item} key={item.id}/>)}
                 </div>
               </li>
 
@@ -34,7 +40,8 @@ function FavoritesScreen(): JSX.Element {
                   </div>
                 </div>
                 <div className="favorites__places">
-                  {[120].map((item) => <PlaceCard classNamePrefix='favorites' key={item}/>)}
+                  {/*TODO: add if*/}
+                  {offers.map((item) => <PlaceCard classNamePrefix='favorites' offer={item} key={item.id}/>)}
                 </div>
               </li>
             </ul>

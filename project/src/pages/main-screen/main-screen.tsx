@@ -1,12 +1,16 @@
 import React from 'react';
-import PlaceCard from '../../components/place-card/place-card';
 import Header from '../../components/header/header';
+import {Offers} from '../../types/offer';
+import PlacesList from '../../components/places-list/places-list';
 
 type MainScreenProps = {
   placesCount: number;
+  offers: Offers;
 }
 
-function MainScreen({placesCount}: MainScreenProps): JSX.Element {
+function MainScreen(props: MainScreenProps): JSX.Element {
+  const {placesCount, offers} = props;
+
   return (
     <div className="page page--gray page--main">
       <Header />
@@ -64,9 +68,11 @@ function MainScreen({placesCount}: MainScreenProps): JSX.Element {
                 <ul className="places__options places__options--custom places__options--opened">
                 </ul>
               </form>
-              <div className="cities__places-list places__list tabs__content">
-                {[120, 30, 56, 1, 5].map((item) => <PlaceCard classNamePrefix='cities' key={item}/>)}
-              </div>
+              <PlacesList
+                offers={offers}
+                className="cities__places-list tabs__content"
+                placeCardClassNamePrefix='cities'
+              />
             </section>
             <div className="cities__right-section">
               <section className="cities__map map"></section>
