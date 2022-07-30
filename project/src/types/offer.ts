@@ -1,3 +1,10 @@
+export type City = {
+  title: string;
+  lat: number;
+  lng: number;
+  zoom: number;
+};
+
 export type Image = {
   src: string;
 };
@@ -22,6 +29,8 @@ export type Offer = {
   isFavorite: boolean;
   host: Host;
   id: string;
+  lat: number;
+  lng: number;
 };
 
 export type Offers = Offer[];

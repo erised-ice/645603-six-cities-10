@@ -1,4 +1,11 @@
-import {Offers} from '../types/offer';
+import {City, Offers} from '../types/offer';
+
+export const CITY: City = {
+  title: 'Amsterdam',
+  lat: 52.377956,
+  lng: 4.897070,
+  zoom: 11,
+};
 
 export const offers: Offers = [
   {
@@ -35,6 +42,8 @@ export const offers: Offers = [
       isPro: false
     },
     id: '1',
+    lat: 52.3909553943508,
+    lng: 4.85309666406198
   },
   {
     images: [
@@ -70,6 +79,8 @@ export const offers: Offers = [
       isPro: true
     },
     id: '2',
+    lat: 52.369553943508,
+    lng: 4.85309666406198
   },
   {
     images: [
@@ -105,6 +116,8 @@ export const offers: Offers = [
       isPro: false
     },
     id: '3',
+    lat: 52.3909553943508,
+    lng: 4.929309666406198
   },
   {
     images: [
@@ -139,6 +152,8 @@ export const offers: Offers = [
       hostName: 'Melissa',
       isPro: false
     },
-    id: '4'
+    id: '4',
+    lat: 52.3809553943508,
+    lng: 4.939309666406198
   },
 ];
