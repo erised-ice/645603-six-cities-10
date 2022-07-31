@@ -2,6 +2,8 @@ import React from 'react';
 import Header from '../../components/header/header';
 import {Offers} from '../../types/offer';
 import PlacesList from '../../components/places-list/places-list';
+import MapComponent from '../../components/map-component/map-component';
+import {CITY} from '../../mocks/offers';
 
 type MainScreenProps = {
   placesCount: number;
@@ -75,7 +77,9 @@ function MainScreen(props: MainScreenProps): JSX.Element {
               />
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <section className="cities__map map">
+                <MapComponent city={CITY} offers={offers}/>
+              </section>
             </div>
           </div>
         </div>
