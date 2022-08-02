@@ -13,11 +13,10 @@ function MainScreen(): JSX.Element {
   const {city, offers} = useAppSelector((state) => state);
   const currentOffers = offers.filter((offer) => offer.city === city);
   const placesCount = currentOffers.length;
+
   useEffect(() => {
     dispatch(getOffers());
-    // eslint-disable-next-line
-    return () => console.log('buy');
-  }, [city, offers]);
+  }, [dispatch]);
 
   return (
     <div className="page page--gray page--main">
