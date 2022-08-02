@@ -6,20 +6,19 @@ import FavoritesScreen from '../../pages/favorites-screen/favorites-screen';
 import PropertyScreen from '../../pages/property-screen/property-screen';
 import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
 import PrivateRoute from '../private-route/private-route';
-import {Offers} from '../../types/offer';
+import {useAppSelector} from '../../hooks';
 
-type AppScreenProps = {
-  placesCount: number;
-  offers: Offers;
-}
+function App(): JSX.Element {
+  const offers = useAppSelector((state) => state.offers);
 
-function App({placesCount, offers}: AppScreenProps): JSX.Element {
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path={AppRoute.Main}
-          element={<MainScreen placesCount={placesCount} offers={offers}/>}
+          element={
+            <MainScreen/>
+          }
         />
         <Route
           path={AppRoute.Login}
