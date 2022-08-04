@@ -42,6 +42,7 @@ export const offers: Offers = [
       isPro: false
     },
     id: '1',
+    city: 'Amsterdam',
     lat: 52.3909553943508,
     lng: 4.85309666406198
   },
@@ -79,6 +80,7 @@ export const offers: Offers = [
       isPro: true
     },
     id: '2',
+    city: 'Paris',
     lat: 52.369553943508,
     lng: 4.85309666406198
   },
@@ -116,6 +118,7 @@ export const offers: Offers = [
       isPro: false
     },
     id: '3',
+    city: 'Paris',
     lat: 52.3909553943508,
     lng: 4.929309666406198
   },
@@ -153,6 +156,7 @@ export const offers: Offers = [
       isPro: false
     },
     id: '4',
+    city: 'Brussels',
     lat: 52.3809553943508,
     lng: 4.939309666406198
   },

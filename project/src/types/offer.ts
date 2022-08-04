@@ -29,8 +29,11 @@ export type Offer = {
   isFavorite: boolean;
   host: Host;
   id: string;
+  city: string;
   lat: number;
   lng: number;
 };
 
 export type Offers = Offer[];
+
+export type Locations = string[];

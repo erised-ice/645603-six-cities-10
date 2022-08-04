@@ -1,17 +1,22 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Header from '../../components/header/header';
-import {Offers} from '../../types/offer';
 import PlacesList from '../../components/places-list/places-list';
 import MapComponent from '../../components/map-component/map-component';
 import {CITY} from '../../mocks/offers';
+import {LOCATIONS} from '../../const';
+import LocationsList from '../../components/locations-list/locations-list';
+import {useAppDispatch, useAppSelector} from '../../hooks';
+import {setOffers} from '../../store/action';
 
-type MainScreenProps = {
-  placesCount: number;
-  offers: Offers;
-}
+function MainScreen(): JSX.Element {
+  const dispatch = useAppDispatch();
+  const {city, offers} = useAppSelector((state) => state);
+  const currentOffers = offers.filter((offer) => offer.city === city);
+  const placesCount = currentOffers.length;
 
-function MainScreen(props: MainScreenProps): JSX.Element {
-  const {placesCount, offers} = props;
+  useEffect(() => {
+    dispatch(setOffers());
+  }, [dispatch, currentOffers]);
 
   return (
     <div className="page page--gray page--main">
@@ -20,45 +25,14 @@ function MainScreen(props: MainScreenProps): JSX.Element {
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
-            <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="/#">
-                  <span>Paris</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="/#">
-                  <span>Cologne</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="/#">
-                  <span>Brussels</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a href="/#" className="locations__item-link tabs__item tabs__item--active">
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="/#">
-                  <span>Hamburg</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="/#">
-                  <span>Dusseldorf</span>
-                </a>
-              </li>
-            </ul>
+            <LocationsList locations={LOCATIONS} />
           </section>
         </div>
         <div className="cities">
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{placesCount} places to stay in Amsterdam</b>
+              <b className="places__found">{placesCount} places to stay in {city}</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
@@ -71,14 +45,14 @@ function MainScreen(props: MainScreenProps): JSX.Element {
                 </ul>
               </form>
               <PlacesList
-                offers={offers}
+                offers={currentOffers}
                 className="cities__places-list tabs__content"
                 placeCardClassNamePrefix='cities'
               />
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <MapComponent city={CITY} offers={offers}/>
+                <MapComponent city={CITY} offers={currentOffers}/>
               </section>
             </div>
           </div>
