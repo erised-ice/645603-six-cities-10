@@ -6,7 +6,7 @@ import {CITY} from '../../mocks/offers';
 import {LOCATIONS} from '../../const';
 import LocationsList from '../../components/locations-list/locations-list';
 import {useAppDispatch, useAppSelector} from '../../hooks';
-import {getOffers} from '../../store/action';
+import {setOffers} from '../../store/action';
 
 function MainScreen(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -15,8 +15,8 @@ function MainScreen(): JSX.Element {
   const placesCount = currentOffers.length;
 
   useEffect(() => {
-    dispatch(getOffers());
-  }, [dispatch]);
+    dispatch(setOffers());
+  }, [dispatch, currentOffers]);
 
   return (
     <div className="page page--gray page--main">

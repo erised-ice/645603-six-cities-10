@@ -1,5 +1,5 @@
 import {createReducer} from '@reduxjs/toolkit';
-import {getOffers, setCity} from './action';
+import {setOffers, setCity} from './action';
 import {offers} from '../mocks/offers';
 import {Offers} from '../types/offer';
 
@@ -18,7 +18,7 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(setCity, (state, action) => {
       state.city = action.payload;
     })
-    .addCase(getOffers, (state) => {
+    .addCase(setOffers, (state) => {
       state.offers = offers;
     });
 });
