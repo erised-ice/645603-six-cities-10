@@ -7,9 +7,16 @@ import PropertyScreen from '../../pages/property-screen/property-screen';
 import NotFoundScreen from '../../pages/not-found-screen/not-found-screen';
 import PrivateRoute from '../private-route/private-route';
 import {useAppSelector} from '../../hooks';
+import LoadingScreen from '../loading-screen/loading-screen';
 
 function App(): JSX.Element {
-  const offers = useAppSelector((state) => state.offers);
+  const {isDataLoaded, offers} = useAppSelector((state) => state);
+
+  if (isDataLoaded) {
+    return (
+      <LoadingScreen />
+    );
+  }
 
   return (
     <BrowserRouter>

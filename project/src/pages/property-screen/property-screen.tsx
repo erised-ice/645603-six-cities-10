@@ -13,7 +13,7 @@ type PropertyScreenProps = {
 
 function PropertyScreen({offers}: PropertyScreenProps): JSX.Element {
   const params = useParams();
-  const offer = offers.find((item) => item.id === params.id);
+  const offer = offers.find((item) => item.id.toString() === params.id);
 
   return (
     <div className="page">
@@ -26,12 +26,12 @@ function PropertyScreen({offers}: PropertyScreenProps): JSX.Element {
               <div className="property__gallery">
                 {offer.images.map((item) => (
                   <div
-                    key={item.src}
+                    key={item}
                     className="property__image-wrapper"
                   >
                     <img
                       className="property__image"
-                      src={item.src}
+                      src={item}
                       alt="studio"
                     />
                   </div>
@@ -75,7 +75,7 @@ function PropertyScreen({offers}: PropertyScreenProps): JSX.Element {
                   </li>
                 </ul>
                 <div className="property__price">
-                  <b className="property__price-value">&euro;{offer.pricePerNight}</b>
+                  <b className="property__price-value">&euro;{offer.price}</b>
                   <span className="property__price-text">&nbsp;night</span>
                 </div>
                 <div className="property__inside">

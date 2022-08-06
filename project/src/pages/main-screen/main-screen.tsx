@@ -1,22 +1,15 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import Header from '../../components/header/header';
 import PlacesList from '../../components/places-list/places-list';
 import MapComponent from '../../components/map-component/map-component';
-import {CITY} from '../../mocks/offers';
 import {LOCATIONS} from '../../const';
 import LocationsList from '../../components/locations-list/locations-list';
-import {useAppDispatch, useAppSelector} from '../../hooks';
-import {setOffers} from '../../store/action';
+import {useAppSelector} from '../../hooks';
 
 function MainScreen(): JSX.Element {
-  const dispatch = useAppDispatch();
   const {city, offers} = useAppSelector((state) => state);
-  const currentOffers = offers.filter((offer) => offer.city === city);
+  const currentOffers = offers.filter((offer) => offer.city.name === city);
   const placesCount = currentOffers.length;
-
-  useEffect(() => {
-    dispatch(setOffers());
-  }, [dispatch, currentOffers]);
 
   return (
     <div className="page page--gray page--main">
@@ -52,7 +45,10 @@ function MainScreen(): JSX.Element {
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <MapComponent city={CITY} offers={currentOffers}/>
+                {/*TODO: fix map in 5.18. Больше подробностей (часть 2)*/}
+                {currentOffers.length > 0 ? (
+                  <MapComponent city={currentOffers[0].city} offers={currentOffers}/>
+                ) : null}
               </section>
             </div>
           </div>
