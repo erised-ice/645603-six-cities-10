@@ -17,13 +17,14 @@ function PlacesList(props: PlacesListProps):JSX.Element {
 
   return (
     <div className={`places__list${className ? ` ${className}` : ''}`}>
-      {offers.map((item) => (
-        <PlaceCard
-          classNamePrefix={placeCardClassNamePrefix}
-          offer={item}
-          key={item.id}
-          onMouseOver={() => setActiveCard(item.id)}
-        />))}
+      {offers.map((item) =>
+        (
+          <PlaceCard
+            classNamePrefix={placeCardClassNamePrefix}
+            offer={item}
+            key={item.id}
+            onMouseOver={() => setActiveCard(item.id.toString())}
+          />))}
     </div>
   );
 }

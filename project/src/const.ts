@@ -17,3 +17,7 @@ export const URL_MARKER_DEFAULT = 'img/pin.svg';
 export const LOCATIONS = [
   'Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'
 ];
+
+export enum APIRoute {
+  Offers = '/hotels',
+}
