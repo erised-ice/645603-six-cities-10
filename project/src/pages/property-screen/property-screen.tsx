@@ -1,18 +1,136 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Navigate, useParams} from 'react-router-dom';
-import ReviewCard from '../../components/review-card/review-card';
 import Header from '../../components/header/header';
 import PlacesList from '../../components/places-list/places-list';
 import ReviewForm from '../../components/review-form/review-form';
 import {AppRoute} from '../../const';
-import {useAppSelector} from '../../hooks';
-import {Offer} from '../../types/offer';
+import {useAppDispatch, useAppSelector} from '../../hooks';
+import {Offer, Offers} from '../../types/offer';
+import ReviewsList from '../../components/reviews-list/reviews-list';
+import MapComponent from '../../components/map-component/map-component';
+import {fetchOfferAction} from "../../store/api-actions";
+import LoadingScreen from "../../components/loading-screen/loading-screen";
+
+const reviews = [
+  {
+    comment: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.',
+    date: '2022-08-08T19:07:11.112Z',
+    id: 1,
+    rating: 4,
+    user: {
+      avatarUrl: 'img/avatar-max.jpg',
+      id: 1,
+      isPro: true,
+      name: 'Oliver.conner'
+    }
+  },
+  {
+    comment: 'A second quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.',
+    date: '2022-09-08T19:07:11.112Z',
+    id: 2,
+    rating: 5,
+    user: {
+      avatarUrl: 'img/avatar-max.jpg',
+      id: 2,
+      isPro: false,
+      name: 'OliverTest.conner'
+    }
+  }
+];
+
+const offersNearby: Offers = [
+  {
+    bedrooms: 3,
+    city: {
+      location: {
+        latitude: 52.370216,
+        longitude: 4.895168,
+        zoom: 10
+      },
+      name: 'Amsterdam'
+    },
+    description: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.',
+    goods: [
+      'Heating'
+    ],
+    host: {
+      avatarUrl: 'img/apartment-02.jpg',
+      id: 3,
+      isPro: true,
+      name: 'Angelina'
+    },
+    id: 1,
+    images: [
+      'img/2.png'
+    ],
+    isFavorite: true,
+    isPremium: false,
+    location: {
+      latitude: 52.35514938496378,
+      longitude: 4.673877537499948,
+      zoom: 8
+    },
+    maxAdults: 4,
+    previewImage: 'img/apartment-02.jpg',
+    price: 120,
+    rating: 4.8,
+    title: 'Beautiful & luxurious studio at great location',
+    type: 'apartment'
+  },
+  {
+    bedrooms: 4,
+    city: {
+      location: {
+        latitude: 52.370216,
+        longitude: 4.895168,
+        zoom: 10
+      },
+      name: 'Amsterdam'
+    },
+    description: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.',
+    goods: [
+      'Heating'
+    ],
+    host: {
+      avatarUrl: 'img/apartment-01.jpg',
+      id: 3,
+      isPro: true,
+      name: 'Angelina'
+    },
+    id: 1,
+    images: [
+      'img/apartment-01.jpg'
+    ],
+    isFavorite: true,
+    isPremium: false,
+    location: {
+      latitude: 52.35545638497378,
+      longitude: 4.673877456499748,
+      zoom: 8
+    },
+    maxAdults: 4,
+    previewImage: 'img/apartment-01.jpg',
+    price: 320,
+    rating: 4.8,
+    title: 'Beautiful & luxurious studio at great location',
+    type: 'apartment'
+  }
+];
 
 function PropertyScreen(): JSX.Element {
   const params = useParams();
-  const {offers} = useAppSelector((state) => state);
-  const offer = offers.find((item) => item.id.toString() === params.id) as Offer;
-  const {images, title, isFavorite, isPremium, rating, type, bedrooms, maxAdults, price, goods, description, host} = offer;
+  const dispatch = useAppDispatch();
+  const {offer} = useAppSelector((state) => state);
+
+  useEffect(() => {
+    dispatch(fetchOfferAction(params.id as string))
+  }, []);
+
+  if (!offer) {
+    return <LoadingScreen />
+  }
+  const {city, images, title, isFavorite, isPremium, rating, type, bedrooms, maxAdults, price, goods, description, host} = offer;
+
   const {name, isPro, avatarUrl} = host;
 
   return (
@@ -114,21 +232,21 @@ function PropertyScreen(): JSX.Element {
                   </div>
                 </div>
                 <section className="property__reviews reviews">
-                  <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">1</span></h2>
-                  <ul className="reviews__list">
-                    <ReviewCard />
-                  </ul>
+                  <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
+                  {reviews.length > 0 ? <ReviewsList reviews={reviews}/> : null}
                   <ReviewForm />
                 </section>
               </div>
             </div>
-            <section className="property__map map"></section>
+            <section className="property__map map">
+              <MapComponent city={city} offers={offersNearby}/>
+            </section>
           </section>
           <div className="container">
             <section className="near-places places">
               <h2 className="near-places__title">Other places in the neighbourhood</h2>
               <PlacesList
-                offers={offers}
+                offers={offersNearby}
                 className="near-places__list"
                 placeCardClassNamePrefix="near-places"
               />
