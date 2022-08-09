@@ -1,17 +1,24 @@
 import {createReducer} from '@reduxjs/toolkit';
-import {setCity, loadOffers, setDataLoadedStatus} from './action';
-import {Offers} from '../types/offer';
+import {setCity, loadOffers, setDataLoadedStatus, loadReviews, loadOffer, loadNearbyOffers} from './action';
+import {Offer, Offers} from '../types/offer';
+import {Reviews} from '../types/review';
 
-type InitialState = {
+type InitialStateType = {
   city: string;
   offers: Offers;
+  offer: Offer | undefined;
+  nearbyOffers: Offers;
   isDataLoaded: boolean;
+  reviews: Reviews;
 }
 
-const initialState: InitialState = {
+const initialState: InitialStateType = {
   city: 'Paris',
   offers: [],
+  offer: undefined,
+  nearbyOffers: [],
   isDataLoaded: false,
+  reviews: [],
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -22,8 +29,17 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(loadOffers, (state, action) => {
       state.offers = action.payload;
     })
+    .addCase(loadOffer, (state, action) => {
+      state.offer = action.payload;
+    })
+    .addCase(loadNearbyOffers, (state, action) => {
+      state.nearbyOffers = action.payload;
+    })
     .addCase(setDataLoadedStatus, (state, action) => {
       state.isDataLoaded = action.payload;
+    })
+    .addCase(loadReviews, (state, action) => {
+      state.reviews = action.payload;
     });
 });
 

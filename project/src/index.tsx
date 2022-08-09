@@ -6,7 +6,7 @@ import {store} from './store';
 import {fetchOffersAction} from './store/api-actions';
 
 store.dispatch(fetchOffersAction());
-
+/*TODO: Перенести в мэйн*/
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
 );
