@@ -3,7 +3,8 @@ import {AppDispatch, State} from '../types/state';
 import {AxiosInstance} from 'axios';
 import {Offer, Offers} from '../types/offer';
 import {APIRoute} from '../const';
-import {loadOffer, loadOffers, setDataLoadedStatus} from './action';
+import {loadNearbyOffers, loadOffer, loadOffers, loadReviews, setDataLoadedStatus} from './action';
+import {Reviews} from '../types/review';
 
 export const fetchOffersAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch,
@@ -28,5 +29,29 @@ export const fetchOfferAction = createAsyncThunk<void, string, {
   async (id, {dispatch, extra: api}) => {
     const {data} = await api.get<Offer>(`${APIRoute.Offers}/${id}`);
     dispatch(loadOffer(data));
+  },
+);
+
+export const fetchNearbyOffersAction = createAsyncThunk<void, string, {
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance
+}>(
+  'data/fetchNearbyOffers',
+  async (id, {dispatch, extra: api}) => {
+    const {data} = await api.get<Offers>(`${APIRoute.Offers}/${id}/nearby`);
+    dispatch(loadNearbyOffers(data));
   }
-)
+);
+
+export const fetchReviewsAction = createAsyncThunk<void, string, {
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance
+}>(
+  'data/fetchReviews',
+  async (id, {dispatch, extra: api}) => {
+    const {data} = await api.get<Reviews>(`${APIRoute.Reviews}/${id}`);
+    dispatch(loadReviews(data));
+  }
+);

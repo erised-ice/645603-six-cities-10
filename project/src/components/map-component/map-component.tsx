@@ -18,7 +18,8 @@ const defaultCustomIcon = new Icon({
 
 function MapComponent(props: MapProps): JSX.Element {
   const {city, offers} = props;
-/* TODO: тут должно быть не эни и нулл а что-то другое */
+  /* TODO: тут должно быть не эни и нулл а что-то другое */
+  // eslint-disable-next-line
   const layersRef = useRef<any>(null);
 
   const mapRef = useRef<HTMLDivElement | null>(null);
@@ -49,9 +50,9 @@ function MapComponent(props: MapProps): JSX.Element {
 
   useEffect(() => {
     if (map) {
-      map.flyTo({lat: city.location.latitude, lng: city.location.longitude}, city.location.zoom)
+      map.flyTo({lat: city.location.latitude, lng: city.location.longitude}, city.location.zoom);
     }
-  }, [city]);
+  }, [map, city]);
 
   return (
     <div

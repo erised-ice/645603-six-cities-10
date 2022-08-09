@@ -5,5 +5,6 @@ import {Reviews} from '../types/review';
 export const setCity = createAction<string>('setCity');
 export const loadOffers = createAction<Offers>('loadOffers');
 export const loadOffer = createAction<Offer>('loadOffer');
-export const setDataLoadedStatus = createAction<boolean>('setDataLoadedStatus');
+export const loadNearbyOffers = createAction<Offers>('loadNearbyOffers');
 export const loadReviews = createAction<Reviews>('loadReviews');
+export const setDataLoadedStatus = createAction<boolean>('setDataLoadedStatus');
