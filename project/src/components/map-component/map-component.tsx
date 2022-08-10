@@ -2,12 +2,13 @@ import React, {useEffect, useRef} from 'react';
 import {Icon, LayerGroup, Marker} from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import useMap from '../../hooks/useMap';
-import {City, Offers} from '../../types/offer';
-import {URL_MARKER_DEFAULT} from '../../const';
+import {City, Offer, Offers} from '../../types/offer';
+import {URL_MARKER_CURRENT, URL_MARKER_DEFAULT} from '../../const';
 
 type MapProps = {
   city: City;
   offers: Offers;
+  selectedOffer?: Offer | null;
 };
 
 const defaultCustomIcon = new Icon({
@@ -16,8 +17,14 @@ const defaultCustomIcon = new Icon({
   iconAnchor: [13.5, 19.5]
 });
 
+const currentCustomIcon = new Icon({
+  iconUrl: URL_MARKER_CURRENT,
+  iconSize: [27, 39],
+  iconAnchor: [13.5, 19.5]
+});
+
 function MapComponent(props: MapProps): JSX.Element {
-  const {city, offers} = props;
+  const {city, offers, selectedOffer} = props;
   /* TODO: тут должно быть не эни и нулл а что-то другое */
   // eslint-disable-next-line
   const layersRef = useRef<any>(null);
@@ -40,7 +47,11 @@ function MapComponent(props: MapProps): JSX.Element {
         });
 
         marker
-          .setIcon(defaultCustomIcon)
+          .setIcon(
+            selectedOffer !== undefined && offer.id === selectedOffer?.id
+              ? currentCustomIcon
+              : defaultCustomIcon
+          )
           .addTo(layersRef.current);
       });
 

@@ -1,19 +1,16 @@
-import React, {useState} from 'react';
-import {Offers} from '../../types/offer';
+import React from 'react';
+import {Offer, Offers} from '../../types/offer';
 import PlaceCard from '../place-card/place-card';
 
 type PlacesListProps = {
   className?: string;
   placeCardClassNamePrefix: string;
   offers: Offers;
+  onMouseOver?: (offer:Offer) => void;
 }
 
 function PlacesList(props: PlacesListProps):JSX.Element {
-  const {className, placeCardClassNamePrefix, offers} = props;
-
-  const [activeCardId, setActiveCard] = useState('0');
-  // eslint-disable-next-line
-  console.log(activeCardId);
+  const {className, placeCardClassNamePrefix, offers, onMouseOver} = props;
 
   return (
     <div className={`places__list${className ? ` ${className}` : ''}`}>
@@ -23,7 +20,7 @@ function PlacesList(props: PlacesListProps):JSX.Element {
             classNamePrefix={placeCardClassNamePrefix}
             offer={item}
             key={item.id}
-            onMouseOver={() => setActiveCard(item.id.toString())}
+            onMouseOver={() => onMouseOver ? onMouseOver(item) : Function.prototype}
           />))}
     </div>
   );

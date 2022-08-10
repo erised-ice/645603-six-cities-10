@@ -1,15 +1,18 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Header from '../../components/header/header';
 import PlacesList from '../../components/places-list/places-list';
 import MapComponent from '../../components/map-component/map-component';
 import {LOCATIONS} from '../../const';
 import LocationsList from '../../components/locations-list/locations-list';
 import {useAppSelector} from '../../hooks';
+import {Offer} from '../../types/offer';
 
 function MainScreen(): JSX.Element {
   const {city, offers} = useAppSelector((state) => state);
   const currentOffers = offers.filter((offer) => offer.city.name === city);
   const placesCount = currentOffers.length;
+
+  const [activeCard, setActiveCard] = useState<Offer | null>(null);
 
   return (
     <div className="page page--gray page--main">
@@ -41,13 +44,17 @@ function MainScreen(): JSX.Element {
                 offers={currentOffers}
                 className="cities__places-list tabs__content"
                 placeCardClassNamePrefix='cities'
+                onMouseOver={setActiveCard}
               />
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                {/*TODO: fix map in 5.18. Больше подробностей (часть 2)*/}
                 {currentOffers.length > 0 ? (
-                  <MapComponent city={currentOffers[0].city} offers={currentOffers}/>
+                  <MapComponent
+                    city={currentOffers[0].city}
+                    offers={currentOffers}
+                    selectedOffer={activeCard}
+                  />
                 ) : null}
               </section>
             </div>
