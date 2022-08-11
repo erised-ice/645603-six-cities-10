@@ -1,6 +1,6 @@
 import React from 'react';
 import {Review} from '../../types/review';
-import {getRatingInPercents} from '../../services/utils';
+import Rating from '../rating/rating';
 
 type ReviewCardProps = {
   review: Review;
@@ -10,7 +10,6 @@ function ReviewCard(props: ReviewCardProps): JSX.Element {
   const {review} = props;
   const {comment, user, rating} = review;
   const {avatarUrl, isPro, name} = user;
-  const ratingInPercents = getRatingInPercents(rating);
 
   return (
     <li className="reviews__item">
@@ -29,12 +28,7 @@ function ReviewCard(props: ReviewCardProps): JSX.Element {
         </span>
       </div>
       <div className="reviews__info">
-        <div className="reviews__rating rating">
-          <div className="reviews__stars rating__stars">
-            <span style={{width: ratingInPercents}}></span>
-            <span className="visually-hidden">Rating</span>
-          </div>
-        </div>
+        <Rating rating={rating} classNamePrefix="reviews" />
         <p className="reviews__text">
           {comment}
         </p>

@@ -9,7 +9,7 @@ import ReviewsList from '../../components/reviews-list/reviews-list';
 import MapComponent from '../../components/map-component/map-component';
 import {fetchNearbyOffersAction, fetchOfferAction, fetchReviewsAction} from '../../store/api-actions';
 import LoadingScreen from '../../components/loading-screen/loading-screen';
-import {getRatingInPercents} from '../../services/utils';
+import Rating from '../../components/rating/rating';
 
 function PropertyScreen(): JSX.Element {
   const params = useParams();
@@ -34,8 +34,6 @@ function PropertyScreen(): JSX.Element {
 
   const {city, images, title, isFavorite, isPremium, rating, type, bedrooms, maxAdults, price, goods, description, host} = offer;
   const {name, isPro, avatarUrl} = host;
-
-  const ratingInPercents = getRatingInPercents(rating);
 
   return (
     <div className="page">
@@ -77,13 +75,7 @@ function PropertyScreen(): JSX.Element {
                     <span className="visually-hidden">To bookmarks</span>
                   </button>
                 </div>
-                <div className="property__rating rating">
-                  <div className="property__stars rating__stars">
-                    <span style={{width: ratingInPercents}}></span>
-                    <span className="visually-hidden">Rating</span>
-                  </div>
-                  <span className="property__rating-value rating__value">{rating}</span>
-                </div>
+                <Rating rating={rating} classNamePrefix="property" />
                 <ul className="property__features">
                   <li className="property__feature property__feature--entire">
                     {type}

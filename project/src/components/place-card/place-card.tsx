@@ -1,7 +1,7 @@
 import React, {MouseEventHandler} from 'react';
 import {Offer} from '../../types/offer';
 import {Link} from 'react-router-dom';
-import {getRatingInPercents} from '../../services/utils';
+import Rating from '../rating/rating';
 
 type PlaceCardProps = {
   classNamePrefix?: string;
@@ -12,7 +12,6 @@ type PlaceCardProps = {
 function PlaceCard(props: PlaceCardProps): JSX.Element {
   const {offer, classNamePrefix, onMouseOver} = props;
   const {previewImage, title, isFavorite, isPremium, type, price, id, rating} = offer;
-  const ratingInPercents = getRatingInPercents(rating);
 
   return (
     <article className={`place-card${classNamePrefix ? ` ${classNamePrefix}__card` : ''}`} onMouseOver={onMouseOver}>
@@ -39,12 +38,7 @@ function PlaceCard(props: PlaceCardProps): JSX.Element {
             <span className="visually-hidden">To bookmarks</span>
           </button>
         </div>
-        <div className="place-card__rating rating">
-          <div className="place-card__stars rating__stars">
-            <span style={{width: ratingInPercents}}></span>
-            <span className="visually-hidden">Rating</span>
-          </div>
-        </div>
+        <Rating rating={rating} classNamePrefix="place-card" />
         <h2 className="place-card__name">
           <Link to={`/offer/${id}`}>{title}</Link>
         </h2>
