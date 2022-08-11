@@ -5,7 +5,9 @@ import MapComponent from '../../components/map-component/map-component';
 import {LOCATIONS} from '../../const';
 import LocationsList from '../../components/locations-list/locations-list';
 import {useAppSelector} from '../../hooks';
-import {Offer} from '../../types/offer';
+import {Offer, Offers} from '../../types/offer';
+import SortComponent from '../../components/sort-component/sort-component';
+import {sortOfferPriceHighToLow, sortOfferPriceLowToHigh, sortOffersByRating} from '../../services/sort';
 
 function MainScreen(): JSX.Element {
   const {city, offers} = useAppSelector((state) => state);
@@ -13,6 +15,22 @@ function MainScreen(): JSX.Element {
   const placesCount = currentOffers.length;
 
   const [activeCard, setActiveCard] = useState<Offer | null>(null);
+  const [activeOption, setActiveOption] = useState('popular');
+
+  const getOffers = (option:string) => {
+    switch (option) {
+      case 'popular':
+        return currentOffers;
+      case 'cheap':
+        return currentOffers.sort(sortOfferPriceLowToHigh);
+      case 'expensive':
+        return currentOffers.sort(sortOfferPriceHighToLow);
+      case 'top':
+        return currentOffers.sort(sortOffersByRating);
+    }
+  };
+
+  const sortedOffers = getOffers(activeOption);
 
   return (
     <div className="page page--gray page--main">
@@ -29,19 +47,11 @@ function MainScreen(): JSX.Element {
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">{placesCount} places to stay in {city}</b>
-              <form className="places__sorting" action="#" method="get">
-                <span className="places__sorting-caption">Sort by</span>
-                <span className="places__sorting-type" tabIndex={0}>
-                  Popular
-                  <svg className="places__sorting-arrow" width="7" height="4">
-                    <use xlinkHref="#icon-arrow-select"></use>
-                  </svg>
-                </span>
-                <ul className="places__options places__options--custom places__options--opened">
-                </ul>
-              </form>
+              <SortComponent
+                onMouseClick={setActiveOption}
+              />
               <PlacesList
-                offers={currentOffers}
+                offers={sortedOffers as Offers}
                 className="cities__places-list tabs__content"
                 placeCardClassNamePrefix='cities'
                 onMouseOver={setActiveCard}

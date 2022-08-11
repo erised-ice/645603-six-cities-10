@@ -26,7 +26,7 @@ function PropertyScreen(): JSX.Element {
   useEffect(() => {
     dispatch(fetchReviewsAction(params.id as string));
   }, [dispatch, params]);
-
+  /*TODO: Добавить проверки загрузились ли комментарии и предложения поблизости см PR*/
   if (!offer) {
     return <LoadingScreen />;
   }
