@@ -1,5 +1,6 @@
 import React from 'react';
 import {Review} from '../../types/review';
+import Rating from '../rating/rating';
 
 type ReviewCardProps = {
   review: Review;
@@ -7,7 +8,7 @@ type ReviewCardProps = {
 
 function ReviewCard(props: ReviewCardProps): JSX.Element {
   const {review} = props;
-  const {comment, user} = review;
+  const {comment, user, rating} = review;
   const {avatarUrl, isPro, name} = user;
 
   return (
@@ -27,13 +28,7 @@ function ReviewCard(props: ReviewCardProps): JSX.Element {
         </span>
       </div>
       <div className="reviews__info">
-        <div className="reviews__rating rating">
-          <div className="reviews__stars rating__stars">
-            {/*TODO: rating*/}
-            <span style={{width: '80%'}}></span>
-            <span className="visually-hidden">Rating</span>
-          </div>
-        </div>
+        <Rating rating={rating} classNamePrefix="reviews" />
         <p className="reviews__text">
           {comment}
         </p>

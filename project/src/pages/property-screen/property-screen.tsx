@@ -9,6 +9,7 @@ import ReviewsList from '../../components/reviews-list/reviews-list';
 import MapComponent from '../../components/map-component/map-component';
 import {fetchNearbyOffersAction, fetchOfferAction, fetchReviewsAction} from '../../store/api-actions';
 import LoadingScreen from '../../components/loading-screen/loading-screen';
+import Rating from '../../components/rating/rating';
 
 function PropertyScreen(): JSX.Element {
   const params = useParams();
@@ -27,12 +28,11 @@ function PropertyScreen(): JSX.Element {
     dispatch(fetchReviewsAction(params.id as string));
   }, [dispatch, params]);
 
-  if (!offer) {
+  if (!offer || !nearbyOffers || !reviews) {
     return <LoadingScreen />;
   }
 
   const {city, images, title, isFavorite, isPremium, rating, type, bedrooms, maxAdults, price, goods, description, host} = offer;
-
   const {name, isPro, avatarUrl} = host;
 
   return (
@@ -43,7 +43,6 @@ function PropertyScreen(): JSX.Element {
           <section className="property">
             <div className="property__gallery-container container">
               <div className="property__gallery">
-                {/*TODO: should be not more 6 img*/}
                 {images.filter((_, index) => index <= 5).map((item) => (
                   <div
                     key={item}
@@ -76,14 +75,7 @@ function PropertyScreen(): JSX.Element {
                     <span className="visually-hidden">To bookmarks</span>
                   </button>
                 </div>
-                {/*TODO: count rating width*/}
-                <div className="property__rating rating">
-                  <div className="property__stars rating__stars">
-                    <span style={{width: '80%'}}></span>
-                    <span className="visually-hidden">Rating</span>
-                  </div>
-                  <span className="property__rating-value rating__value">{rating}</span>
-                </div>
+                <Rating rating={rating} classNamePrefix="property" />
                 <ul className="property__features">
                   <li className="property__feature property__feature--entire">
                     {type}
