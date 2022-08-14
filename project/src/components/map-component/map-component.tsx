@@ -57,7 +57,7 @@ function MapComponent(props: MapProps): JSX.Element {
 
       layersRef.current.addTo(map);
     }
-  }, [map, offers]);
+  }, [map, offers, selectedOffer]);
 
   useEffect(() => {
     if (map) {
