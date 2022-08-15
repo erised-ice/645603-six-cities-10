@@ -1,5 +1,6 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, FormEvent, useState} from 'react';
 import RatingItem from '../rating-item/rating-item';
+import {Review} from '../../types/review';
 
 const RatingData = [
   {
@@ -29,17 +30,27 @@ const RatingData = [
   }
 ];
 
-function ReviewForm() {
+type ReviewFormProps = {
+  onSubmit: (payload: Pick<Review, 'comment' | 'rating'>) => void;
+};
+
+function ReviewForm(props: ReviewFormProps):JSX.Element {
+  const {onSubmit} = props;
   const [userReview, setUserReview] = useState('');
   const [userRating, setUserRating] = useState(0);
-  // eslint-disable-next-line
-  console.log(userReview);
-  // eslint-disable-next-line
-  console.log(userRating);
+
+  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    onSubmit({comment: userReview, rating: userRating});
+  };
 
   return (
-    <form className="reviews__form form" action="#" method="post">
-      {/*TODO: add onSubmit*/}
+    <form
+      className="reviews__form form"
+      action="#"
+      method="post"
+      onSubmit={handleSubmit}
+    >
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
         {RatingData.map(({value, id, title}) => (
@@ -64,7 +75,7 @@ function ReviewForm() {
           To submit review please make sure to set <span className="reviews__star">rating</span> and
           describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
         </p>
-        <button className="reviews__submit form__submit button" type="submit" disabled>Submit</button>
+        <button className="reviews__submit form__submit button" type="submit">Submit</button>
       </div>
     </form>
   );

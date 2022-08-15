@@ -7,33 +7,56 @@ import {AppRoute} from '../../const';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import MapComponent from '../../components/map-component/map-component';
-import {fetchNearbyOffersAction, fetchOfferAction, fetchReviewsAction} from '../../store/api-actions';
+import {fetchNearbyOffersAction, fetchOfferAction, fetchReviewsAction, reviewAction} from '../../store/api-actions';
 import LoadingScreen from '../../components/loading-screen/loading-screen';
 import Rating from '../../components/rating/rating';
+import {Review} from '../../types/review';
 
 function PropertyScreen(): JSX.Element {
   const params = useParams();
   const dispatch = useAppDispatch();
-  const {offer, nearbyOffers, reviews} = useAppSelector((state) => state);
+  const {authorizationStatus, offer, nearbyOffers, reviews} = useAppSelector((state) => state);
+
+  const isAuth = (authorizationStatus === 'AUTH');
+  const onReviewSubmit = (payload: Pick<Review, 'comment' | 'rating'>) => {
+    dispatch(reviewAction([params.id as string, payload]));
+  };
 
   useEffect(() => {
     dispatch(fetchOfferAction(params.id as string));
-  }, [dispatch, params]);
+  }, [dispatch, params.id]);
 
   useEffect(() => {
     dispatch(fetchNearbyOffersAction(params.id as string));
-  }, [dispatch, params]);
+  }, [dispatch, params.id]);
 
   useEffect(() => {
     dispatch(fetchReviewsAction(params.id as string));
-  }, [dispatch, params]);
+  }, [dispatch, params.id]);
 
   if (!offer || !nearbyOffers || !reviews) {
     return <LoadingScreen />;
   }
 
-  const {city, images, title, isFavorite, isPremium, rating, type, bedrooms, maxAdults, price, goods, description, host} = offer;
-  const {name, isPro, avatarUrl} = host;
+  const {
+    city,
+    images,
+    title,
+    isFavorite,
+    isPremium,
+    rating,
+    type,
+    bedrooms,
+    maxAdults,
+    price,
+    goods,
+    description,
+    host
+  } = offer;
+  const {name,
+    isPro,
+    avatarUrl
+  } = host;
 
   return (
     <div className="page">
@@ -128,7 +151,7 @@ function PropertyScreen(): JSX.Element {
                 <section className="property__reviews reviews">
                   <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
                   {reviews.length > 0 ? <ReviewsList reviews={reviews}/> : null}
-                  <ReviewForm />
+                  {isAuth ? <ReviewForm onSubmit={onReviewSubmit}/> : null}
                 </section>
               </div>
             </div>

@@ -11,7 +11,7 @@ import {
   requireAuthorization,
   setDataLoadedStatus, setError
 } from './action';
-import {Reviews} from '../types/review';
+import {Review, Reviews} from '../types/review';
 import {AuthData} from '../types/auth-data';
 import {UserData} from '../types/user-data';
 import {dropToken, saveToken} from '../services/token';
@@ -48,8 +48,12 @@ export const fetchOfferAction = createAsyncThunk<void, string, {
 }>(
   'data/fetchOffer',
   async (id, {dispatch, extra: api}) => {
-    const {data} = await api.get<Offer>(`${APIRoute.Offers}/${id}`);
-    dispatch(loadOffer(data));
+    try {
+      const {data} = await api.get<Offer>(`${APIRoute.Offers}/${id}`);
+      dispatch(loadOffer(data));
+    } catch {
+      dispatch(redirectToRoute(AppRoute.NotFound));
+    }
   },
 );
 
@@ -119,5 +123,21 @@ export const logoutAction = createAsyncThunk<void, undefined, {
     dropToken();
     dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
     dispatch(redirectToRoute(AppRoute.Login));
+  },
+);
+
+export const reviewAction = createAsyncThunk<void, [string, Pick<Review, 'comment' | 'rating'>], {
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance
+}>(
+  'user/review',
+  async ([id, {comment, rating}], {dispatch, extra: api}) => {
+    try {
+      const {data} = await api.post<Reviews>(`${APIRoute.Reviews}/${id}`, {comment, rating});
+      dispatch(loadReviews(data));
+    } catch {
+      dispatch(setError('Server error'));
+    }
   },
 );
