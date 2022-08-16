@@ -32,20 +32,29 @@ const RatingData = [
 ];
 
 type ReviewFormProps = {
-  onSubmit: (payload: Pick<Review, 'comment' | 'rating'>) => void;
+  onSubmit: (payload: Pick<Review, 'comment' | 'rating'>, resetForm: () => void) => void;
 };
+
+const minReviewLength = 50;
+const maxReviewLength = 300;
 
 function ReviewForm(props: ReviewFormProps):JSX.Element {
   const {onSubmit} = props;
+
   const [userReview, setUserReview] = useState('');
   const [userRating, setUserRating] = useState(0);
-  const minReviewLength = 50;
-  const maxReviewLength = 300;
   const {isReviewLoading} = useAppSelector((state) => state);
+
+  const resetForm = () => {
+    setUserReview('');
+    setUserRating(0);
+  };
+
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    onSubmit({comment: userReview, rating: userRating});
+    onSubmit({comment: userReview, rating: userRating}, resetForm);
   };
+
   const isDisabled = userReview.length < minReviewLength || userReview.length > maxReviewLength || userRating < 1;
 
   return (
@@ -65,6 +74,7 @@ function ReviewForm(props: ReviewFormProps):JSX.Element {
             onChange={() => setUserRating(value)}
             key={id}
             disabled={isReviewLoading}
+            checked={userRating >= value}
           />
         ))}
       </div>
@@ -75,6 +85,7 @@ function ReviewForm(props: ReviewFormProps):JSX.Element {
         placeholder="Tell how was your stay, what you like and what can be improved"
         onChange={({target}: ChangeEvent<HTMLTextAreaElement>) => {setUserReview(target.value);}}
         disabled={isReviewLoading}
+        value={userReview}
       />
       <div className="reviews__button-wrapper">
         <p className="reviews__help">

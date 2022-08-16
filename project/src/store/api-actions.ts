@@ -126,20 +126,21 @@ export const logoutAction = createAsyncThunk<void, undefined, {
   },
 );
 
-export const reviewAction = createAsyncThunk<void, [string, Pick<Review, 'comment' | 'rating'>], {
+export const reviewAction = createAsyncThunk<void, [string, Pick<Review, 'comment' | 'rating'>, () => void], {
   dispatch: AppDispatch,
   state: State,
   extra: AxiosInstance
 }>(
   'user/review',
-  async ([id, {comment, rating}], {dispatch, extra: api}) => {
+  async ([id, {comment, rating}, resetForm], {dispatch, extra: api}) => {
     try {
       dispatch(setReviewLoadingStatus(true));
       const {data} = await api.post<Reviews>(`${APIRoute.Reviews}/${id}`, {comment, rating});
       dispatch(loadReviews(data));
       dispatch(setReviewLoadingStatus(false));
+      resetForm();
     } catch {
       dispatch(setError('Server error'));
     }
   },
-);
+  );
