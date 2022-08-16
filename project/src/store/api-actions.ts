@@ -9,7 +9,7 @@ import {
   loadOffers,
   loadReviews, loadUser, redirectToRoute,
   requireAuthorization,
-  setDataLoadedStatus, setError
+  setDataLoadedStatus, setError, setReviewLoadingStatus
 } from './action';
 import {Review, Reviews} from '../types/review';
 import {AuthData} from '../types/auth-data';
@@ -77,7 +77,7 @@ export const fetchReviewsAction = createAsyncThunk<void, string, {
   'data/fetchReviews',
   async (id, {dispatch, extra: api}) => {
     const {data} = await api.get<Reviews>(`${APIRoute.Reviews}/${id}`);
-    dispatch(loadReviews(data));
+    dispatch(loadReviews(data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date)).filter((_, index) => index < 10)));
   }
 );
 
@@ -134,8 +134,10 @@ export const reviewAction = createAsyncThunk<void, [string, Pick<Review, 'commen
   'user/review',
   async ([id, {comment, rating}], {dispatch, extra: api}) => {
     try {
+      dispatch(setReviewLoadingStatus(true));
       const {data} = await api.post<Reviews>(`${APIRoute.Reviews}/${id}`, {comment, rating});
       dispatch(loadReviews(data));
+      dispatch(setReviewLoadingStatus(false));
     } catch {
       dispatch(setError('Server error'));
     }

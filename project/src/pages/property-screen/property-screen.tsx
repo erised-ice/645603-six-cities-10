@@ -20,6 +20,7 @@ function PropertyScreen(): JSX.Element {
   const isAuth = (authorizationStatus === 'AUTH');
   const onReviewSubmit = (payload: Pick<Review, 'comment' | 'rating'>) => {
     dispatch(reviewAction([params.id as string, payload]));
+    dispatch(fetchReviewsAction(params.id as string));
   };
 
   useEffect(() => {

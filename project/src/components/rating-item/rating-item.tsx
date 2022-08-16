@@ -4,11 +4,12 @@ type RatingItemProps = {
   value: number;
   id: string;
   title: string;
-  onChange: ChangeEventHandler<HTMLInputElement> | undefined
+  onChange: ChangeEventHandler<HTMLInputElement> | undefined;
+  disabled: boolean;
 }
 
 function RatingItem(props: RatingItemProps):JSX.Element {
-  const {value, id, title, onChange} = props;
+  const {value, id, title, onChange, disabled} = props;
 
   return (
     <>
@@ -19,6 +20,7 @@ function RatingItem(props: RatingItemProps):JSX.Element {
         id={id}
         type="radio"
         onChange={onChange}
+        disabled={disabled}
       />
       <label htmlFor={id} className="reviews__rating-label form__rating-label" title={title}>
         <svg className="form__star-image" width="37" height="33">

@@ -6,7 +6,7 @@ import {
   loadReviews,
   loadOffer,
   loadNearbyOffers,
-  requireAuthorization, setError, loadUser
+  requireAuthorization, setError, loadUser, setReviewLoadingStatus
 } from './action';
 import {Offer, Offers} from '../types/offer';
 import {Reviews} from '../types/review';
@@ -23,6 +23,7 @@ type InitialStateType = {
   authorizationStatus: AuthorizationStatus;
   error: string | null;
   user: UserData | undefined;
+  isReviewLoading: boolean;
 }
 
 const initialState: InitialStateType = {
@@ -34,7 +35,8 @@ const initialState: InitialStateType = {
   reviews: [],
   authorizationStatus: AuthorizationStatus.Unknown,
   error: null,
-  user: undefined
+  user: undefined,
+  isReviewLoading: false,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -65,6 +67,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setError, (state, action) => {
       state.error = action.payload;
+    })
+    .addCase(setReviewLoadingStatus, (state, action) => {
+      state.isReviewLoading = action.payload;
     });
 });
 

@@ -1,6 +1,7 @@
 import React, {ChangeEvent, FormEvent, useState} from 'react';
 import RatingItem from '../rating-item/rating-item';
 import {Review} from '../../types/review';
+import {useAppSelector} from '../../hooks';
 
 const RatingData = [
   {
@@ -38,11 +39,14 @@ function ReviewForm(props: ReviewFormProps):JSX.Element {
   const {onSubmit} = props;
   const [userReview, setUserReview] = useState('');
   const [userRating, setUserRating] = useState(0);
-
+  const minReviewLength = 50;
+  const maxReviewLength = 300;
+  const {isReviewLoading} = useAppSelector((state) => state);
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     onSubmit({comment: userReview, rating: userRating});
   };
+  const isDisabled = userReview.length < minReviewLength || userReview.length > maxReviewLength || userRating < 1;
 
   return (
     <form
@@ -60,6 +64,7 @@ function ReviewForm(props: ReviewFormProps):JSX.Element {
             title={title}
             onChange={() => setUserRating(value)}
             key={id}
+            disabled={isReviewLoading}
           />
         ))}
       </div>
@@ -69,13 +74,20 @@ function ReviewForm(props: ReviewFormProps):JSX.Element {
         name="review"
         placeholder="Tell how was your stay, what you like and what can be improved"
         onChange={({target}: ChangeEvent<HTMLTextAreaElement>) => {setUserReview(target.value);}}
+        disabled={isReviewLoading}
       />
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
           To submit review please make sure to set <span className="reviews__star">rating</span> and
           describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
         </p>
-        <button className="reviews__submit form__submit button" type="submit">Submit</button>
+        <button
+          className="reviews__submit form__submit button"
+          type="submit"
+          disabled={isDisabled}
+        >
+          Submit
+        </button>
       </div>
     </form>
   );
