@@ -8,7 +8,7 @@ type RatingProps = {
 
 function Rating(props: RatingProps):JSX.Element {
   const {classNamePrefix, rating} = props;
-  const ratingInPercents = getRatingInPercents(rating);
+  const ratingInPercents = getRatingInPercents(Math.round(rating));
 
   return (
     <div
@@ -17,7 +17,7 @@ function Rating(props: RatingProps):JSX.Element {
       <div
         className={`rating__stars${classNamePrefix ? ` ${classNamePrefix}__stars` : ''}`}
       >
-        <span style={{width: ratingInPercents}}></span>
+        <span style={{width: `${ratingInPercents}%`}}></span>
         <span className="visually-hidden">Rating</span>
       </div>
     </div>

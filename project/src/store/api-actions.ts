@@ -9,9 +9,9 @@ import {
   loadOffers,
   loadReviews, loadUser, redirectToRoute,
   requireAuthorization,
-  setDataLoadedStatus, setError
+  setDataLoadedStatus, setError, setReviewLoadingStatus
 } from './action';
-import {Reviews} from '../types/review';
+import {Review, Reviews} from '../types/review';
 import {AuthData} from '../types/auth-data';
 import {UserData} from '../types/user-data';
 import {dropToken, saveToken} from '../services/token';
@@ -48,8 +48,12 @@ export const fetchOfferAction = createAsyncThunk<void, string, {
 }>(
   'data/fetchOffer',
   async (id, {dispatch, extra: api}) => {
-    const {data} = await api.get<Offer>(`${APIRoute.Offers}/${id}`);
-    dispatch(loadOffer(data));
+    try {
+      const {data} = await api.get<Offer>(`${APIRoute.Offers}/${id}`);
+      dispatch(loadOffer(data));
+    } catch {
+      dispatch(redirectToRoute(AppRoute.NotFound));
+    }
   },
 );
 
@@ -73,7 +77,7 @@ export const fetchReviewsAction = createAsyncThunk<void, string, {
   'data/fetchReviews',
   async (id, {dispatch, extra: api}) => {
     const {data} = await api.get<Reviews>(`${APIRoute.Reviews}/${id}`);
-    dispatch(loadReviews(data));
+    dispatch(loadReviews(data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date)).filter((_, index) => index < 10)));
   }
 );
 
@@ -121,3 +125,22 @@ export const logoutAction = createAsyncThunk<void, undefined, {
     dispatch(redirectToRoute(AppRoute.Login));
   },
 );
+
+export const reviewAction = createAsyncThunk<void, [string, Pick<Review, 'comment' | 'rating'>, () => void], {
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance
+}>(
+  'user/review',
+  async ([id, {comment, rating}, resetForm], {dispatch, extra: api}) => {
+    try {
+      dispatch(setReviewLoadingStatus(true));
+      const {data} = await api.post<Reviews>(`${APIRoute.Reviews}/${id}`, {comment, rating});
+      dispatch(loadReviews(data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date)).filter((_, index) => index < 10)));
+      dispatch(setReviewLoadingStatus(false));
+      resetForm();
+    } catch {
+      dispatch(setError('Server error'));
+    }
+  },
+  );

@@ -7,33 +7,55 @@ import {AppRoute} from '../../const';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import MapComponent from '../../components/map-component/map-component';
-import {fetchNearbyOffersAction, fetchOfferAction, fetchReviewsAction} from '../../store/api-actions';
+import {fetchNearbyOffersAction, fetchOfferAction, fetchReviewsAction, reviewAction} from '../../store/api-actions';
 import LoadingScreen from '../../components/loading-screen/loading-screen';
 import Rating from '../../components/rating/rating';
+import {Review} from '../../types/review';
+import BookmarkButton from '../../components/bookmark-button/bookmark-button';
+import HostCard from '../../components/host-card/host-card';
 
 function PropertyScreen(): JSX.Element {
   const params = useParams();
   const dispatch = useAppDispatch();
-  const {offer, nearbyOffers, reviews} = useAppSelector((state) => state);
+  const {authorizationStatus, offer, nearbyOffers, reviews} = useAppSelector((state) => state);
+
+  const isAuth = (authorizationStatus === 'AUTH');
+
+  const onReviewSubmit = (payload: Pick<Review, 'comment' | 'rating'>, callback: () => void) => {
+    dispatch(reviewAction([params.id as string, payload, callback]));
+  };
 
   useEffect(() => {
     dispatch(fetchOfferAction(params.id as string));
-  }, [dispatch, params]);
+  }, [dispatch, params.id]);
 
   useEffect(() => {
     dispatch(fetchNearbyOffersAction(params.id as string));
-  }, [dispatch, params]);
+  }, [dispatch, params.id]);
 
   useEffect(() => {
     dispatch(fetchReviewsAction(params.id as string));
-  }, [dispatch, params]);
+  }, [dispatch, params.id]);
 
   if (!offer || !nearbyOffers || !reviews) {
     return <LoadingScreen />;
   }
 
-  const {city, images, title, isFavorite, isPremium, rating, type, bedrooms, maxAdults, price, goods, description, host} = offer;
-  const {name, isPro, avatarUrl} = host;
+  const {
+    city,
+    images,
+    title,
+    isFavorite,
+    isPremium,
+    rating,
+    type,
+    bedrooms,
+    maxAdults,
+    price,
+    goods,
+    description,
+    host,
+  } = offer;
 
   return (
     <div className="page">
@@ -68,12 +90,12 @@ function PropertyScreen(): JSX.Element {
                   <h1 className="property__name">
                     {title}
                   </h1>
-                  <button className={`property__bookmark-button button${isFavorite ? ' property__bookmark-button--active' : ''}`} type="button">
-                    <svg className="property__bookmark-icon" width="31" height="33">
-                      <use xlinkHref="#icon-bookmark"></use>
-                    </svg>
-                    <span className="visually-hidden">To bookmarks</span>
-                  </button>
+                  <BookmarkButton
+                    classNamePrefix="property"
+                    isFavorite={isFavorite}
+                    iconWidth={31}
+                    iconHeight={33}
+                  />
                 </div>
                 <Rating rating={rating} classNamePrefix="property" />
                 <ul className="property__features">
@@ -104,31 +126,19 @@ function PropertyScreen(): JSX.Element {
                     ))}
                   </ul>
                 </div>
-                <div className="property__host">
-                  <h2 className="property__host-title">Meet the host</h2>
-                  <div className="property__host-user user">
-                    <div className={`property__avatar-wrapper${isPro ? ' property__avatar-wrapper--pro' : ''} user__avatar-wrapper`}>
-                      <img className="property__avatar user__avatar" src={avatarUrl} width="74" height="74" alt="Host avatar"/>
-                    </div>
-                    <span className="property__user-name">
-                      {name}
-                    </span>
-                    {isPro ? (
-                      <span className="property__user-status">
-                        Pro
-                      </span>
-                    ) : null}
-                  </div>
-                  <div className="property__description">
-                    <p className="property__text">
-                      {description}
-                    </p>
-                  </div>
-                </div>
+                <HostCard
+                  host={host}
+                  description={description}
+                />
                 <section className="property__reviews reviews">
-                  <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
+                  <h2 className="reviews__title">
+                    Reviews &middot;
+                    <span className="reviews__amount">
+                      {reviews.length}
+                    </span>
+                  </h2>
                   {reviews.length > 0 ? <ReviewsList reviews={reviews}/> : null}
-                  <ReviewForm />
+                  {isAuth ? <ReviewForm onSubmit={onReviewSubmit}/> : null}
                 </section>
               </div>
             </div>

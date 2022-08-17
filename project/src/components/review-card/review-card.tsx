@@ -8,8 +8,9 @@ type ReviewCardProps = {
 
 function ReviewCard(props: ReviewCardProps): JSX.Element {
   const {review} = props;
-  const {comment, user, rating} = review;
+  const {comment, user, rating, date} = review;
   const {avatarUrl, isPro, name} = user;
+  const humanDate = new Date(date).toLocaleString('en-us',{month:'long', year:'numeric'});
 
   return (
     <li className="reviews__item">
@@ -32,8 +33,7 @@ function ReviewCard(props: ReviewCardProps): JSX.Element {
         <p className="reviews__text">
           {comment}
         </p>
-        {/* TODO: date - do I need use some library? No, I can do it without library */}
-        <time className="reviews__time" dateTime="2019-04-24">April 2019</time>
+        <time className="reviews__time" dateTime={date}>{humanDate}</time>
       </div>
     </li>
   );

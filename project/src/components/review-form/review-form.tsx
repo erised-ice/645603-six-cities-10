@@ -1,5 +1,7 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, FormEvent, useState} from 'react';
 import RatingItem from '../rating-item/rating-item';
+import {Review} from '../../types/review';
+import {useAppSelector} from '../../hooks';
 
 const RatingData = [
   {
@@ -29,17 +31,39 @@ const RatingData = [
   }
 ];
 
-function ReviewForm() {
+type ReviewFormProps = {
+  onSubmit: (payload: Pick<Review, 'comment' | 'rating'>, resetForm: () => void) => void;
+};
+
+const minReviewLength = 50;
+const maxReviewLength = 300;
+
+function ReviewForm(props: ReviewFormProps):JSX.Element {
+  const {onSubmit} = props;
+
   const [userReview, setUserReview] = useState('');
   const [userRating, setUserRating] = useState(0);
-  // eslint-disable-next-line
-  console.log(userReview);
-  // eslint-disable-next-line
-  console.log(userRating);
+  const {isReviewLoading} = useAppSelector((state) => state);
+
+  const resetForm = () => {
+    setUserReview('');
+    setUserRating(0);
+  };
+
+  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+    onSubmit({comment: userReview, rating: userRating}, resetForm);
+  };
+
+  const isDisabled = userReview.length < minReviewLength || userReview.length > maxReviewLength || userRating < 1;
 
   return (
-    <form className="reviews__form form" action="#" method="post">
-      {/*TODO: add onSubmit*/}
+    <form
+      className="reviews__form form"
+      action="#"
+      method="post"
+      onSubmit={handleSubmit}
+    >
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
         {RatingData.map(({value, id, title}) => (
@@ -49,6 +73,8 @@ function ReviewForm() {
             title={title}
             onChange={() => setUserRating(value)}
             key={id}
+            disabled={isReviewLoading}
+            checked={userRating >= value}
           />
         ))}
       </div>
@@ -58,13 +84,21 @@ function ReviewForm() {
         name="review"
         placeholder="Tell how was your stay, what you like and what can be improved"
         onChange={({target}: ChangeEvent<HTMLTextAreaElement>) => {setUserReview(target.value);}}
+        disabled={isReviewLoading}
+        value={userReview}
       />
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
           To submit review please make sure to set <span className="reviews__star">rating</span> and
           describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
         </p>
-        <button className="reviews__submit form__submit button" type="submit" disabled>Submit</button>
+        <button
+          className="reviews__submit form__submit button"
+          type="submit"
+          disabled={isDisabled}
+        >
+          Submit
+        </button>
       </div>
     </form>
   );

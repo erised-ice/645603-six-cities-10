@@ -1,16 +1,19 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Header from '../../components/header/header';
 import PlacesList from '../../components/places-list/places-list';
 import MapComponent from '../../components/map-component/map-component';
 import {LOCATIONS} from '../../const';
 import LocationsList from '../../components/locations-list/locations-list';
-import {useAppSelector} from '../../hooks';
+import {useAppDispatch, useAppSelector} from '../../hooks';
 import {Offer, Offers} from '../../types/offer';
 import SortComponent from '../../components/sort-component/sort-component';
 import {sortOfferPriceHighToLow, sortOfferPriceLowToHigh, sortOffersByRating} from '../../services/sort';
+import {fetchOffersAction} from '../../store/api-actions';
+import LoadingScreen from '../../components/loading-screen/loading-screen';
 
 function MainScreen(): JSX.Element {
-  const {city, offers} = useAppSelector((state) => state);
+  const dispatch = useAppDispatch();
+  const {city, offers, isDataLoaded} = useAppSelector((state) => state);
   const currentOffers = offers.filter((offer) => offer.city.name === city);
   const placesCount = currentOffers.length;
 
@@ -31,6 +34,17 @@ function MainScreen(): JSX.Element {
   };
 
   const sortedOffers = getOffers(activeOption);
+
+  useEffect(() => {
+    dispatch(fetchOffersAction());
+  }, [dispatch]);
+
+  if (isDataLoaded) {
+
+    return (
+      <LoadingScreen />
+    );
+  }
 
   return (
     <div className="page page--gray page--main">
