@@ -136,7 +136,7 @@ export const reviewAction = createAsyncThunk<void, [string, Pick<Review, 'commen
     try {
       dispatch(setReviewLoadingStatus(true));
       const {data} = await api.post<Reviews>(`${APIRoute.Reviews}/${id}`, {comment, rating});
-      dispatch(loadReviews(data));
+      dispatch(loadReviews(data.sort((a, b) => Date.parse(b.date) - Date.parse(a.date)).filter((_, index) => index < 10)));
       dispatch(setReviewLoadingStatus(false));
       resetForm();
     } catch {
