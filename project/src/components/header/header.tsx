@@ -3,6 +3,7 @@ import Logo from '../logo/logo';
 import {Link} from 'react-router-dom';
 import {logoutAction} from '../../store/api-actions';
 import {useAppDispatch, useAppSelector} from '../../hooks';
+import {getAuthorizationStatus, getUser} from '../../store/user-process/selectors';
 
 type HeaderProps = {
   withNav?: boolean;
@@ -10,7 +11,8 @@ type HeaderProps = {
 
 function Header({withNav = true}: HeaderProps): JSX.Element {
   const dispatch = useAppDispatch();
-  const {authorizationStatus, user} = useAppSelector((state) => state);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const user = useAppSelector(getUser);
   const isAuth = (authorizationStatus === 'AUTH' && user);
 
   return (

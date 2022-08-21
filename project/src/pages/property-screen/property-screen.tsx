@@ -13,11 +13,18 @@ import Rating from '../../components/rating/rating';
 import {Review} from '../../types/review';
 import BookmarkButton from '../../components/bookmark-button/bookmark-button';
 import HostCard from '../../components/host-card/host-card';
+import {getAuthorizationStatus} from '../../store/user-process/selectors';
+import {getOffer} from '../../store/offer-data/selectors';
+import {getNearbyOffers} from '../../store/nearby-offers-data/selectors';
+import {getReviews} from '../../store/reviews-data/selectors';
 
 function PropertyScreen(): JSX.Element {
   const params = useParams();
   const dispatch = useAppDispatch();
-  const {authorizationStatus, offer, nearbyOffers, reviews} = useAppSelector((state) => state);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const offer = useAppSelector(getOffer);
+  const nearbyOffers = useAppSelector(getNearbyOffers);
+  const reviews = useAppSelector(getReviews);
 
   const isAuth = (authorizationStatus === 'AUTH');
 

@@ -2,7 +2,7 @@ import React from 'react';
 import LocationsItem from '../locations-item/locations-item';
 import {Locations} from '../../types/offer';
 import {useAppDispatch} from '../../hooks';
-import {setCity} from '../../store/action';
+import {setCity} from '../../store/city-process/city-process';
 
 type LocationsListProps = {
   locations: Locations;

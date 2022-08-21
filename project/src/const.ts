@@ -27,6 +27,17 @@ export enum APIRoute {
   Login = '/login',
   Logout = '/logout',
 }
+
+export enum NameSpace {
+  User = 'USER',
+  Offers = 'OFFERS',
+  Offer = 'OFFER',
+  NearbyOffers = 'NEARBY_OFFERS',
+  Reviews = 'REVIEWS',
+  Error = 'ERROR',
+  City = 'CITY',
+}
+
 //eslint-disable-next-line
 export const emailRegExp = /^(?![\w\.@]*\.\.)(?![\w\.@]*\.@)(?![\w\.]*@\.)\w+[\w\.]*@[\w\.]+\.\w{2,}$/;
 //eslint-disable-next-line
