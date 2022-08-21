@@ -2,6 +2,7 @@ import React, {ChangeEvent, FormEvent, useState} from 'react';
 import RatingItem from '../rating-item/rating-item';
 import {Review} from '../../types/review';
 import {useAppSelector} from '../../hooks';
+import {getReviewLoadingStatus} from '../../store/reviews-data/selectors';
 
 const RatingData = [
   {
@@ -43,7 +44,7 @@ function ReviewForm(props: ReviewFormProps):JSX.Element {
 
   const [userReview, setUserReview] = useState('');
   const [userRating, setUserRating] = useState(0);
-  const {isReviewLoading} = useAppSelector((state) => state);
+  const isReviewLoading = useAppSelector(getReviewLoadingStatus);
 
   const resetForm = () => {
     setUserReview('');

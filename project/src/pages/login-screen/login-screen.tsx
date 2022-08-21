@@ -2,9 +2,9 @@ import React, {FormEvent, useRef} from 'react';
 import Header from '../../components/header/header';
 import {useAppDispatch} from '../../hooks';
 import {AuthData} from '../../types/auth-data';
-import {clearErrorAction, loginAction} from '../../store/api-actions';
+import {loginAction} from '../../store/api-actions';
 import {emailRegExp, passwordRegExp} from '../../const';
-import {setError} from '../../store/action';
+import {setError} from '../../store/error-process/error-process';
 
 function LoginScreen(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
@@ -24,7 +24,6 @@ function LoginScreen(): JSX.Element {
       const isPasswordValid = passwordRegExp.test(passwordRef.current.value);
 
       if (isEmailValid && isPasswordValid) {
-        dispatch(clearErrorAction());
         onSubmit({
           login: loginRef.current.value,
           password: passwordRef.current.value,
