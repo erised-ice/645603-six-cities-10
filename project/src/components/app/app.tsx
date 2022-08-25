@@ -11,14 +11,12 @@ import LoadingScreen from '../loading-screen/loading-screen';
 import HistoryRouter from '../history-route/history-route';
 import browserHistory from '../../browser-history';
 import {getAuthorizationStatus} from '../../store/user-process/selectors';
-import {getOffers} from '../../store/offers-data/selectors';
 
 const isCheckedAuth = (authorizationStatus: AuthorizationStatus): boolean =>
   authorizationStatus === AuthorizationStatus.Unknown;
 
 function App(): JSX.Element {
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
-  const offers = useAppSelector(getOffers);
 
   if (isCheckedAuth(authorizationStatus)) {
     return (
@@ -45,7 +43,7 @@ function App(): JSX.Element {
             <PrivateRoute
               authorizationStatus={authorizationStatus}
             >
-              <FavoritesScreen offers={offers}/>
+              <FavoritesScreen />
             </PrivateRoute>
           }
         />

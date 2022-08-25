@@ -26,6 +26,7 @@ export enum APIRoute {
   Reviews = '/comments',
   Login = '/login',
   Logout = '/logout',
+  Favorite = '/favorite',
 }
 
 export enum NameSpace {
@@ -33,6 +34,7 @@ export enum NameSpace {
   Offers = 'OFFERS',
   Offer = 'OFFER',
   NearbyOffers = 'NEARBY_OFFERS',
+  FavoriteOffers = 'FAVORITE_OFFERS',
   Reviews = 'REVIEWS',
   Error = 'ERROR',
   City = 'CITY',
