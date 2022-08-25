@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Link} from 'react-router-dom';
 import {UserData} from '../../../../types/user-data';
-import {useAppSelector} from '../../../../hooks';
+import {useAppDispatch, useAppSelector} from '../../../../hooks';
 import {getFavoriteOffers} from '../../../../store/favorite-offers-data/selectors';
+import {fetchFavoriteOffersAction} from '../../../../store/api-actions';
 
 type HeaderLinkProps = {
   user: UserData;
@@ -12,6 +13,11 @@ function HeaderLink(props: HeaderLinkProps): JSX.Element {
   const {user} = props;
   const {avatarUrl, email} = user;
   const favoriteOffers = useAppSelector(getFavoriteOffers);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchFavoriteOffersAction());
+  }, [dispatch]);
 
   return (
     <Link

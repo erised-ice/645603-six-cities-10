@@ -39,6 +39,7 @@ function PlaceCard(props: PlaceCardProps): JSX.Element {
             isFavorite={isFavorite}
             iconWidth={18}
             iconHeight={19}
+            offerId={id.toString()}
           />
         </div>
         <Rating rating={rating} classNamePrefix="place-card" />
