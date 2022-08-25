@@ -1,50 +1,37 @@
 import React from 'react';
 import Header from '../../components/header/header';
-import PlaceCard from '../../components/place-card/place-card';
-import {Offers} from '../../types/offer';
+import {useAppSelector} from '../../hooks';
+import {getFavoriteOffers} from '../../store/favorite-offers-data/selectors';
+import FavoritesListCityItem from '../../components/favorites-list-city-item/favorites-list-city-item';
 
-type FavoritesScreenProps = {
-  offers: Offers;
-}
+function FavoritesScreen(): JSX.Element {
+  const favoriteOffers = useAppSelector(getFavoriteOffers);
+  const cities = favoriteOffers.map((item) => item.city.name);
+  const uniqueCities = Array.from(new Set(cities));
 
-function FavoritesScreen({offers}: FavoritesScreenProps): JSX.Element {
   return (
-    <div className="page">
+    <div className={`page${favoriteOffers.length === 0 ? ' page--favorites-empty' : ''}`}>
       <Header />
 
-      <main className="page__main page__main--favorites">
+      <main className={`page__main page__main--favorites${favoriteOffers.length === 0 ? ' page__main--favorites-empty' : ''}`}>
         <div className="page__favorites-container container">
-          <section className="favorites">
-            <h1 className="favorites__title">Saved listing</h1>
-            <ul className="favorites__list">
-              <li className="favorites__locations-items">
-                <div className="favorites__locations locations locations--current">
-                  <div className="locations__item">
-                    <a className="locations__item-link" href="/#">
-                      <span>Amsterdam</span>
-                    </a>
-                  </div>
+          <section className={`favorites${favoriteOffers.length === 0 ? ' favorites--empty' : ''}`}>
+            {favoriteOffers.length > 0 ? (
+              <>
+                <h1 className="favorites__title">Saved listing</h1>
+                <ul className="favorites__list">
+                  {uniqueCities.map((uniqueCity) => <FavoritesListCityItem key={uniqueCity} city={uniqueCity} offers={favoriteOffers.filter((offer) => offer.city.name === uniqueCity)}/>)}
+                </ul>
+              </>
+            ) : (
+              <>
+                <h1 className="visually-hidden">Favorites (empty)</h1>
+                <div className="favorites__status-wrapper">
+                  <b className="favorites__status">Nothing yet saved.</b>
+                  <p className="favorites__status-description">Save properties to narrow down search or plan your future trips.</p>
                 </div>
-                <div className="favorites__places">
-                  {/*TODO: add if*/}
-                  {offers.map((item) => <PlaceCard classNamePrefix='favorites' offer={item} key={item.id}/>)}
-                </div>
-              </li>
-
-              <li className="favorites__locations-items">
-                <div className="favorites__locations locations locations--current">
-                  <div className="locations__item">
-                    <a className="locations__item-link" href="/#">
-                      <span>Cologne</span>
-                    </a>
-                  </div>
-                </div>
-                <div className="favorites__places">
-                  {/*TODO: add if*/}
-                  {offers.map((item) => <PlaceCard classNamePrefix='favorites' offer={item} key={item.id}/>)}
-                </div>
-              </li>
-            </ul>
+              </>
+            )}
           </section>
         </div>
       </main>

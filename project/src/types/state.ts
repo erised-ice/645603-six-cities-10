@@ -6,7 +6,7 @@ import {UserData} from './user-data';
 
 export type UserProcess = {
   authorizationStatus: AuthorizationStatus;
-  user: UserData | undefined;
+  user: UserData | null;
 };
 
 export type OffersData = {
@@ -20,6 +20,10 @@ export type OfferData = {
 
 export type NearbyOffersData = {
   nearbyOffers: Offers;
+}
+
+export type FavoriteOffersData = {
+  favoriteOffers: Offers;
 }
 
 export type ReviewsData = {

@@ -54,6 +54,32 @@ export const fetchNearbyOffersAction = createAsyncThunk<Offers, string, {
   }
 );
 
+export const fetchFavoriteOffersAction = createAsyncThunk<Offers, undefined, {
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance
+}>(
+  'data/fetchFavoriteOffers',
+  async (_arg, {extra: api}) => {
+    const {data} = await api.get<Offers>(APIRoute.Favorite);
+
+    return data;
+  },
+);
+
+export const changeOfferStatusAction = createAsyncThunk<Offer, [string, {isFavorite: boolean}], {
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance
+}>(
+  'data/offer',
+  async ([id, {isFavorite}], {extra: api}) => {
+    const {data} = await api.post<Offer>(`${APIRoute.Favorite}/${id}/${isFavorite ? 1 : 0}`);
+
+    return data;
+  }
+);
+
 export const fetchReviewsAction = createAsyncThunk<Reviews, string, {
   dispatch: AppDispatch,
   state: State,
@@ -111,7 +137,7 @@ export const reviewAction = createAsyncThunk<Reviews, [string, Pick<Review, 'com
   extra: AxiosInstance
 }>(
   'user/review',
-  async ([id, {comment, rating}, resetForm], {dispatch, extra: api}) => {
+  async ([id, {comment, rating}, resetForm], {extra: api}) => {
     const {data} = await api.post<Reviews>(`${APIRoute.Reviews}/${id}`, {comment, rating});
 
     resetForm();

@@ -8,10 +8,12 @@ type PlaceCardProps = {
   classNamePrefix?: string;
   offer: Offer;
   onMouseOver?: MouseEventHandler<HTMLElement>;
+  imageWidth?: number;
+  imageHeight?: number;
 }
 
 function PlaceCard(props: PlaceCardProps): JSX.Element {
-  const {offer, classNamePrefix, onMouseOver} = props;
+  const {offer, classNamePrefix, onMouseOver, imageWidth, imageHeight} = props;
   const {previewImage, title, isFavorite, isPremium, type, price, id, rating} = offer;
 
   return (
@@ -23,10 +25,10 @@ function PlaceCard(props: PlaceCardProps): JSX.Element {
       ) : null}
       <div className={`place-card__image-wrapper${classNamePrefix ? ` ${classNamePrefix}__image-wrapper` : ''}`}>
         <a href="/#">
-          <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place"/>
+          <img className="place-card__image" src={previewImage} width={`${imageWidth ? `${imageWidth}` : '260'}`} height={`${imageHeight ? `${imageHeight}` : '200'}`} alt="Place"/>
         </a>
       </div>
-      <div className="place-card__info">
+      <div className={`place-card__info${classNamePrefix ? ` ${classNamePrefix}__card-info` : ''}`}>
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
             <b className="place-card__price-value">&euro;{price}</b>
@@ -37,6 +39,7 @@ function PlaceCard(props: PlaceCardProps): JSX.Element {
             isFavorite={isFavorite}
             iconWidth={18}
             iconHeight={19}
+            offerId={id.toString()}
           />
         </div>
         <Rating rating={rating} classNamePrefix="place-card" />

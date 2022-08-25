@@ -7,7 +7,12 @@ import {AppRoute} from '../../const';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import MapComponent from '../../components/map-component/map-component';
-import {fetchNearbyOffersAction, fetchOfferAction, fetchReviewsAction, reviewAction} from '../../store/api-actions';
+import {
+  fetchNearbyOffersAction,
+  fetchOfferAction,
+  fetchReviewsAction,
+  reviewAction
+} from '../../store/api-actions';
 import LoadingScreen from '../../components/loading-screen/loading-screen';
 import Rating from '../../components/rating/rating';
 import {Review} from '../../types/review';
@@ -102,6 +107,7 @@ function PropertyScreen(): JSX.Element {
                     isFavorite={isFavorite}
                     iconWidth={31}
                     iconHeight={33}
+                    offerId={params.id as string}
                   />
                 </div>
                 <Rating rating={rating} classNamePrefix="property" />

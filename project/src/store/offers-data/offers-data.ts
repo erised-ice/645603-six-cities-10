@@ -1,7 +1,7 @@
 import {OffersData} from '../../types/state';
 import {createSlice} from '@reduxjs/toolkit';
 import {NameSpace} from '../../const';
-import {fetchOffersAction} from '../api-actions';
+import {changeOfferStatusAction, fetchOffersAction} from '../api-actions';
 
 const initialState: OffersData = {
   offers: [],
@@ -20,6 +20,13 @@ export const offersData = createSlice({
       .addCase(fetchOffersAction.fulfilled, (state, action) => {
         state.offers = action.payload;
         state.isDataLoaded = false;
+      })
+      .addCase(changeOfferStatusAction.fulfilled, (state, action) => {
+        const offer = state.offers.find((item) => item.id === action.payload.id);
+
+        if (offer) {
+          offer.isFavorite = action.payload.isFavorite;
+        }
       });
   }
 });
