@@ -22,6 +22,7 @@ import {getAuthorizationStatus} from '../../store/user-process/selectors';
 import {getOffer} from '../../store/offer-data/selectors';
 import {getNearbyOffers} from '../../store/nearby-offers-data/selectors';
 import {getReviews} from '../../store/reviews-data/selectors';
+import {Offers} from '../../types/offer';
 
 function PropertyScreen(): JSX.Element {
   const params = useParams();
@@ -32,6 +33,7 @@ function PropertyScreen(): JSX.Element {
   const reviews = useAppSelector(getReviews);
 
   const isAuth = (authorizationStatus === 'AUTH');
+  const mapOffers = [...nearbyOffers, offer] as Offers;
 
   const onReviewSubmit = (payload: Pick<Review, 'comment' | 'rating'>, callback: () => void) => {
     dispatch(reviewAction([params.id as string, payload, callback]));
@@ -156,7 +158,7 @@ function PropertyScreen(): JSX.Element {
               </div>
             </div>
             <section className="property__map map">
-              <MapComponent city={city} offers={nearbyOffers}/>
+              <MapComponent city={city} offers={mapOffers} selectedOffer={offer}/>
             </section>
           </section>
           <div className="container">
