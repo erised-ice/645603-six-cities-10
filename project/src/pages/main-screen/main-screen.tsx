@@ -44,7 +44,6 @@ function MainScreen(): JSX.Element {
   }, [dispatch]);
 
   if (isDataLoaded) {
-
     return (
       <LoadingScreen />
     );
