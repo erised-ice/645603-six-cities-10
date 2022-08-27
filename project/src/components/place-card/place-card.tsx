@@ -1,4 +1,4 @@
-import React, {MouseEventHandler} from 'react';
+import React, {memo, MouseEventHandler} from 'react';
 import {Offer} from '../../types/offer';
 import {Link} from 'react-router-dom';
 import Rating from '../rating/rating';
@@ -52,4 +52,4 @@ function PlaceCard(props: PlaceCardProps): JSX.Element {
   );
 }
 
-export default PlaceCard;
+export default memo(PlaceCard);

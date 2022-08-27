@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo, useMemo} from 'react';
 import Logo from '../logo/logo';
 import {Link} from 'react-router-dom';
 import {logoutAction} from '../../store/api-actions';
@@ -14,7 +14,7 @@ function Header({withNav = true}: HeaderProps): JSX.Element {
   const dispatch = useAppDispatch();
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const user = useAppSelector(getUser);
-  const isAuth = (authorizationStatus === 'AUTH' && user);
+  const isAuth = useMemo(() => authorizationStatus === 'AUTH' && user, [authorizationStatus, user]);
 
   return (
     <header className="header">
@@ -65,4 +65,4 @@ function Header({withNav = true}: HeaderProps): JSX.Element {
   );
 }
 
-export default Header;
+export default memo(Header);

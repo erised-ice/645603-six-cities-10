@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 import {Offer, Offers} from '../../types/offer';
 import PlaceCard from '../place-card/place-card';
 
@@ -26,4 +26,4 @@ function PlacesList(props: PlacesListProps):JSX.Element {
   );
 }
 
-export default PlacesList;
+export default memo(PlacesList);

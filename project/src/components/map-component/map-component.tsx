@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {memo, useEffect, useRef} from 'react';
 import {Icon, LayerGroup, Marker} from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import useMap from '../../hooks/useMap';
@@ -74,4 +74,4 @@ function MapComponent(props: MapProps): JSX.Element {
   );
 }
 
-export default MapComponent;
+export default memo(MapComponent);

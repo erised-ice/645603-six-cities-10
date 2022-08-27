@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 import LocationsItem from '../locations-item/locations-item';
 import {Locations} from '../../types/offer';
 import {useAppDispatch, useAppSelector} from '../../hooks';
@@ -31,4 +31,4 @@ function LocationsList(props: LocationsListProps): JSX.Element {
   );
 }
 
-export default LocationsList;
+export default memo(LocationsList);
