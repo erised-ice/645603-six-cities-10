@@ -72,6 +72,7 @@ function MainScreen(): JSX.Element {
                   className="cities__places-list tabs__content"
                   placeCardClassNamePrefix='cities'
                   onMouseOver={setActiveCard}
+                  onMouseOut={() => setActiveCard(null)}
                 />
               </section>
             ) : (

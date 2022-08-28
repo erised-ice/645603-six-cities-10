@@ -8,16 +8,17 @@ type PlaceCardProps = {
   classNamePrefix?: string;
   offer: Offer;
   onMouseOver?: MouseEventHandler<HTMLElement>;
+  onMouseOut?: MouseEventHandler<HTMLElement>;
   imageWidth?: number;
   imageHeight?: number;
 }
 
 function PlaceCard(props: PlaceCardProps): JSX.Element {
-  const {offer, classNamePrefix, onMouseOver, imageWidth, imageHeight} = props;
+  const {offer, classNamePrefix, onMouseOver, onMouseOut, imageWidth, imageHeight} = props;
   const {previewImage, title, isFavorite, isPremium, type, price, id, rating} = offer;
 
   return (
-    <article className={`place-card${classNamePrefix ? ` ${classNamePrefix}__card` : ''}`} onMouseOver={onMouseOver}>
+    <article className={`place-card${classNamePrefix ? ` ${classNamePrefix}__card` : ''}`} onMouseOver={onMouseOver} onMouseOut={onMouseOut}>
       {isPremium ? (
         <div className="place-card__mark">
           <span>Premium</span>

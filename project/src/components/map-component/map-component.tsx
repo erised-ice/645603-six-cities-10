@@ -47,7 +47,7 @@ function MapComponent(props: MapProps): JSX.Element {
         if (layersRef.current) {
           marker
             .setIcon(
-              selectedOffer !== undefined && offer.id === selectedOffer?.id
+              selectedOffer !== null && offer.id === selectedOffer?.id
                 ? currentCustomIcon
                 : defaultCustomIcon
             )

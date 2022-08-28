@@ -7,10 +7,11 @@ type PlacesListProps = {
   placeCardClassNamePrefix: string;
   offers: Offers;
   onMouseOver?: (offer:Offer) => void;
+  onMouseOut?: () => void;
 }
 
 function PlacesList(props: PlacesListProps):JSX.Element {
-  const {className, placeCardClassNamePrefix, offers, onMouseOver} = props;
+  const {className, placeCardClassNamePrefix, offers, onMouseOver, onMouseOut} = props;
 
   return (
     <div className={`places__list${className ? ` ${className}` : ''}`}>
@@ -21,6 +22,7 @@ function PlacesList(props: PlacesListProps):JSX.Element {
             offer={item}
             key={item.id}
             onMouseOver={() => onMouseOver ? onMouseOver(item) : Function.prototype}
+            onMouseOut={onMouseOut}
           />))}
     </div>
   );
