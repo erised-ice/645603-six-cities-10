@@ -14,7 +14,6 @@ function FavoritesListCityItem(props: FavoritesListCityItemProps): JSX.Element {
     <li className="favorites__locations-items">
       <div className="favorites__locations locations locations--current">
         <div className="locations__item">
-          {/*TODO: make link*/}
           <a className="locations__item-link" href="/#">
             <span>{city}</span>
           </a>

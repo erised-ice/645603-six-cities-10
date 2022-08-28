@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {useAppSelector} from '../../hooks';
 import './error-message.css';
 import {getError} from '../../store/error-process/selectors';
@@ -10,8 +10,7 @@ function ErrorMessage(): JSX.Element | null {
   const dispatch = useDispatch();
 
   const error = useAppSelector(getError);
-  const delayedClearError = () => setTimeout(() => dispatch(clearError()), TIMEOUT_SHOW_ERROR);
-
+  const delayedClearError = useCallback(() => setTimeout(() => dispatch(clearError()), TIMEOUT_SHOW_ERROR), [dispatch]);
 
   useEffect(() => {
     error && delayedClearError();

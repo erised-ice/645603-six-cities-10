@@ -1,4 +1,4 @@
-import React, {memo, useEffect, useMemo, useState} from 'react';
+import React, {memo, useCallback, useEffect, useMemo, useState} from 'react';
 import Header from '../../components/header/header';
 import PlacesList from '../../components/places-list/places-list';
 import MapComponent from '../../components/map-component/map-component';
@@ -23,7 +23,7 @@ function MainScreen(): JSX.Element {
   const [activeCard, setActiveCard] = useState<Offer | null>(null);
   const [activeOption, setActiveOption] = useState('popular');
 
-  const getSortedOffers = (option:string) => {
+  const getSortedOffers = useCallback((option:string) => {
     switch (option) {
       case 'popular':
         return currentOffers;
@@ -34,9 +34,9 @@ function MainScreen(): JSX.Element {
       case 'top':
         return currentOffers.sort(sortOffersByRating);
     }
-  };
+  }, [currentOffers]);
 
-  const sortedOffers = useMemo(() => getSortedOffers(activeOption), [activeOption, currentOffers]);
+  const sortedOffers = useMemo(() => getSortedOffers(activeOption), [activeOption, getSortedOffers]);
 
   useEffect(() => {
     dispatch(fetchOffersAction());
