@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {memo, useCallback, useEffect, useMemo, useState} from 'react';
 import Header from '../../components/header/header';
 import PlacesList from '../../components/places-list/places-list';
 import MapComponent from '../../components/map-component/map-component';
@@ -10,21 +10,20 @@ import SortComponent from '../../components/sort-component/sort-component';
 import {sortOfferPriceHighToLow, sortOfferPriceLowToHigh, sortOffersByRating} from '../../services/sort';
 import {fetchOffersAction} from '../../store/api-actions';
 import LoadingScreen from '../../components/loading-screen/loading-screen';
-import {getCity} from '../../store/city-process/selectors';
-import {getDataLoadedStatus, getOffers} from '../../store/offers-data/selectors';
+import {filterOffers, getCity} from '../../store/city-process/selectors';
+import {getDataLoadedStatus} from '../../store/offers-data/selectors';
 
 function MainScreen(): JSX.Element {
   const dispatch = useAppDispatch();
   const city = useAppSelector(getCity);
-  const offers = useAppSelector(getOffers);
   const isDataLoaded = useAppSelector(getDataLoadedStatus);
-  const currentOffers = offers.filter((offer) => offer.city.name === city);
+  const currentOffers = useAppSelector(filterOffers);
   const placesCount = currentOffers.length;
 
   const [activeCard, setActiveCard] = useState<Offer | null>(null);
   const [activeOption, setActiveOption] = useState('popular');
 
-  const getSortedOffers = (option:string) => {
+  const getSortedOffers = useCallback((option:string) => {
     switch (option) {
       case 'popular':
         return currentOffers;
@@ -35,16 +34,15 @@ function MainScreen(): JSX.Element {
       case 'top':
         return currentOffers.sort(sortOffersByRating);
     }
-  };
+  }, [currentOffers]);
 
-  const sortedOffers = getSortedOffers(activeOption);
+  const sortedOffers = useMemo(() => getSortedOffers(activeOption), [activeOption, getSortedOffers]);
 
   useEffect(() => {
     dispatch(fetchOffersAction());
   }, [dispatch]);
 
   if (isDataLoaded) {
-
     return (
       <LoadingScreen />
     );
@@ -104,4 +102,4 @@ function MainScreen(): JSX.Element {
   );
 }
 
-export default MainScreen;
+export default memo(MainScreen);

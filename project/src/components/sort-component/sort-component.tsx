@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {memo, useState} from 'react';
 import {options} from '../../services/sort';
 
 type SortComponentProps = {
@@ -43,4 +43,4 @@ function SortComponent(props: SortComponentProps):JSX.Element {
   );
 }
 
-export default SortComponent;
+export default memo(SortComponent);

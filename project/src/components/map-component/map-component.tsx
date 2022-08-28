@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {memo, useEffect, useRef} from 'react';
 import {Icon, LayerGroup, Marker} from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import useMap from '../../hooks/useMap';
@@ -25,9 +25,7 @@ const currentCustomIcon = new Icon({
 
 function MapComponent(props: MapProps): JSX.Element {
   const {city, offers, selectedOffer} = props;
-  /* TODO: тут должно быть не эни и нулл а что-то другое */
-  // eslint-disable-next-line
-  const layersRef = useRef<any>(null);
+  const layersRef = useRef<LayerGroup | null>(null);
 
   const mapRef = useRef<HTMLDivElement | null>(null);
   const map = useMap(mapRef, city);
@@ -46,13 +44,15 @@ function MapComponent(props: MapProps): JSX.Element {
           lng: offer.location.longitude
         });
 
-        marker
-          .setIcon(
-            selectedOffer !== undefined && offer.id === selectedOffer?.id
-              ? currentCustomIcon
-              : defaultCustomIcon
-          )
-          .addTo(layersRef.current);
+        if (layersRef.current) {
+          marker
+            .setIcon(
+              selectedOffer !== undefined && offer.id === selectedOffer?.id
+                ? currentCustomIcon
+                : defaultCustomIcon
+            )
+            .addTo(layersRef.current);
+        }
       });
 
       layersRef.current.addTo(map);
@@ -74,4 +74,4 @@ function MapComponent(props: MapProps): JSX.Element {
   );
 }
 
-export default MapComponent;
+export default memo(MapComponent);
