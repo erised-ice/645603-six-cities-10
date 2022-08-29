@@ -17,7 +17,7 @@ export const offerData = createSlice({
         state.offer = action.payload;
       })
       .addCase(changeOfferStatusAction.fulfilled, (state, action) => {
-        state.offer = action.payload;
+        state.offer = state.offer?.id === action.payload.id ? action.payload : state.offer;
       });
   }
 });

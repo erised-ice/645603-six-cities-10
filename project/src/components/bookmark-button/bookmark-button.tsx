@@ -1,5 +1,5 @@
 import React from 'react';
-import {changeOfferStatusAction, fetchOfferAction} from '../../store/api-actions';
+import {changeOfferStatusAction} from '../../store/api-actions';
 import {AppRoute} from '../../const';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {useNavigate} from 'react-router-dom';
@@ -22,12 +22,7 @@ function BookmarkButton(props: BookmarkButtonProps): JSX.Element {
 
   const handleClick = () => {
     if (isAuth) {
-      if (!isFavorite) {
-        dispatch(changeOfferStatusAction([offerId, {isFavorite: true}]));
-      } else {
-        dispatch(changeOfferStatusAction([offerId, {isFavorite: false}]));
-      }
-      dispatch(fetchOfferAction(offerId));
+      dispatch(changeOfferStatusAction([offerId, {isFavorite: !isFavorite}]));
     } else {
       navigate(AppRoute.Login);
     }

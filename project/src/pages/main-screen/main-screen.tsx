@@ -35,7 +35,7 @@ function MainScreen(): JSX.Element {
       case 'top':
         return currentOffers.sort(sortOffersByRating);
     }
-  }, [currentOffers]);
+  }, [currentOffers, popularOffers]);
 
   const sortedOffers = useMemo(() => getSortedOffers(activeOption), [activeOption, getSortedOffers]);
 

@@ -22,6 +22,7 @@ function RatingItem(props: RatingItemProps):JSX.Element {
         type="radio"
         onChange={onChange}
         disabled={disabled}
+        checked={checked}
       />
       <label htmlFor={id} className="reviews__rating-label form__rating-label" title={title}>
         <svg className="form__star-image" width="37" height="33">

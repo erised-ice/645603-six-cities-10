@@ -19,14 +19,14 @@ function LocationsList(props: LocationsListProps): JSX.Element {
   const city = useAppSelector(getCity);
 
   useEffect(() => {
-    if(params && params.city && LOCATIONS.find((item) => item === params.city) ) {
+    if(params.city && LOCATIONS.find((item) => item === params.city) ) {
       dispatch(setCity(params.city as string));
-    } else if (params && params.city) {
+    } else if (params.city) {
       navigate(AppRoute.NotFound);
     } else {
       dispatch(setCity('Paris'));
     }
-  }, [dispatch, params.city]);
+  }, [dispatch, params.city, navigate]);
 
   return (
     <ul className="locations__list tabs__list">

@@ -1,4 +1,4 @@
-import React, {ChangeEvent, FormEvent, useState} from 'react';
+import React, {ChangeEvent, FormEvent, useMemo, useState} from 'react';
 import RatingItem from '../rating-item/rating-item';
 import {Review} from '../../types/review';
 import {useAppSelector} from '../../hooks';
@@ -56,7 +56,7 @@ function ReviewForm(props: ReviewFormProps):JSX.Element {
     onSubmit({comment: userReview, rating: userRating}, resetForm);
   };
 
-  const isDisabled = userReview.length < minReviewLength || userReview.length > maxReviewLength || userRating < 1 || isReviewLoading;
+  const isDisabled = useMemo(() => userReview.length < minReviewLength || userReview.length > maxReviewLength || userRating < 1 || isReviewLoading, [userReview, userRating, isReviewLoading]);
 
   return (
     <form
