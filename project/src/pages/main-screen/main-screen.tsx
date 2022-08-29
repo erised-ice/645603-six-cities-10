@@ -18,6 +18,7 @@ function MainScreen(): JSX.Element {
   const city = useAppSelector(getCity);
   const isDataLoaded = useAppSelector(getDataLoadedStatus);
   const currentOffers = useAppSelector(filterOffers);
+  const popularOffers = currentOffers.slice();
   const placesCount = currentOffers.length;
 
   const [activeCard, setActiveCard] = useState<Offer | null>(null);
@@ -26,7 +27,7 @@ function MainScreen(): JSX.Element {
   const getSortedOffers = useCallback((option:string) => {
     switch (option) {
       case 'popular':
-        return currentOffers;
+        return popularOffers;
       case 'cheap':
         return currentOffers.sort(sortOfferPriceLowToHigh);
       case 'expensive':
