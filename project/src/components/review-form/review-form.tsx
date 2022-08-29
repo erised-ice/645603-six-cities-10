@@ -56,7 +56,7 @@ function ReviewForm(props: ReviewFormProps):JSX.Element {
     onSubmit({comment: userReview, rating: userRating}, resetForm);
   };
 
-  const isDisabled = userReview.length < minReviewLength || userReview.length > maxReviewLength || userRating < 1;
+  const isDisabled = userReview.length < minReviewLength || userReview.length > maxReviewLength || userRating < 1 || isReviewLoading;
 
   return (
     <form

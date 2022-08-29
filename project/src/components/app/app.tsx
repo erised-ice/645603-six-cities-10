@@ -32,7 +32,12 @@ function App(): JSX.Element {
           element={
             <MainScreen/>
           }
-        />
+        >
+          <Route
+            path=':city'
+            element={<MainScreen />}
+          />
+        </Route>
         <Route
           path={AppRoute.Login}
           element={<LoginScreen />}

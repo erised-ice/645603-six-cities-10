@@ -5,6 +5,7 @@ import {AuthData} from '../../types/auth-data';
 import {loginAction} from '../../store/api-actions';
 import {emailRegExp, passwordRegExp} from '../../const';
 import {setError} from '../../store/error-process/error-process';
+import RandomCityLink from '../../components/random-city-link/random-city-link';
 
 function LoginScreen(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
@@ -79,11 +80,7 @@ function LoginScreen(): JSX.Element {
             </form>
           </section>
           <section className="locations locations--login locations--current">
-            <div className="locations__item">
-              <a className="locations__item-link" href="/#">
-                <span>Amsterdam</span>
-              </a>
-            </div>
+            <RandomCityLink />
           </section>
         </div>
       </main>
