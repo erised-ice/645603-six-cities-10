@@ -18,24 +18,22 @@ function MainScreen(): JSX.Element {
   const city = useAppSelector(getCity);
   const isDataLoaded = useAppSelector(getDataLoadedStatus);
   const currentOffers = useAppSelector(filterOffers);
-  const popularOffers = currentOffers.slice();
   const placesCount = currentOffers.length;
-
   const [activeCard, setActiveCard] = useState<Offer | null>(null);
   const [activeOption, setActiveOption] = useState('popular');
 
   const getSortedOffers = useCallback((option:string) => {
     switch (option) {
       case 'popular':
-        return popularOffers;
+        return currentOffers;
       case 'cheap':
-        return currentOffers.sort(sortOfferPriceLowToHigh);
+        return currentOffers.map((item) => item).sort(sortOfferPriceLowToHigh);
       case 'expensive':
-        return currentOffers.sort(sortOfferPriceHighToLow);
+        return currentOffers.map((item) => item).sort(sortOfferPriceHighToLow);
       case 'top':
-        return currentOffers.sort(sortOffersByRating);
+        return currentOffers.map((item) => item).sort(sortOffersByRating);
     }
-  }, [currentOffers, popularOffers]);
+  }, [currentOffers]);
 
   const sortedOffers = useMemo(() => getSortedOffers(activeOption), [activeOption, getSortedOffers]);
 

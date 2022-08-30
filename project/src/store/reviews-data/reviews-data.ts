@@ -22,6 +22,9 @@ export const reviewsData = createSlice({
       .addCase(reviewAction.pending, (state) => {
         state.isReviewLoading = true;
       })
+      .addCase(reviewAction.rejected, (state) => {
+        state.isReviewLoading = false;
+      })
       .addCase(reviewAction.fulfilled, (state, action) => {
         const newReviews = action.payload;
         state.reviews = newReviews.sort((a, b) => Date.parse(b.date) - Date.parse(a.date)).filter((_, index) => index < 10);
